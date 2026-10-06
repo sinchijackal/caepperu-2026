@@ -76,12 +76,16 @@ export default {
         },
         fadeInShadowLight: {
           "100%": {
+            backgroundColor: "rgba(26, 11, 46, 0.85)",
+            backdropFilter: "blur(20px)",
             boxShadow:
               "0 20px 25px -5px rgba(15, 23, 42, .025), 0 8px 10px -6px rgba(15, 23, 42, .025);",
           },
         },
         fadeInShadowDark: {
           "100%": {
+            backgroundColor: "rgba(15, 5, 26, 0.95)",
+            backdropFilter: "blur(20px)",
             boxShadow:
               "0 20px 25px -5px rgba(2, 6, 23, .25), 0 8px 10px -6px rgba(2, 6, 23, .25);",
           },

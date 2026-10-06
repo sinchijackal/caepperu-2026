@@ -1,0 +1,43 @@
+---
+// Components
+// - Layout
+import Layout from '../layouts/Layout.astro'
+// - CAEP Components
+import MissionVisionGallery from '../components/caep/MissionVisionGallery.astro'
+
+// Content
+// - SEO
+const SEO = {
+	title: 'Nosotros | CAEP CUSCO 2026',
+	description: 'Conoce la misión, visión y los momentos que han marcado la historia del Congreso Académico Estudiantil de Psicología - CAEP Cusco 2026.'
+}
+---
+
+<Layout title={SEO.title} description={SEO.description}>
+	<!-- Page Hero -->
+	<section class="relative flex min-h-[35vh] items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a0b2e] via-[#3b1778] to-[#1a0b2e] py-20 pt-32">
+		<!-- Decorative starry background -->
+		<div
+			class="absolute inset-0 opacity-20"
+			style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 50px 50px;"
+		></div>
+		<!-- Glow blobs -->
+		<div class="pointer-events-none absolute -left-20 top-10 h-64 w-64 rounded-full bg-purple-500/20 blur-3xl"></div>
+		<div class="pointer-events-none absolute -right-20 bottom-10 h-64 w-64 rounded-full bg-yellow-400/10 blur-3xl"></div>
+
+		<div class="container relative z-10 mx-auto px-4 text-center">
+			<span class="mb-4 inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1 text-sm font-semibold uppercase tracking-widest text-white/80 backdrop-blur-sm">
+				CAEP CUSCO 2026
+			</span>
+			<h1 class="mt-4 text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">
+				Sobre <span class="bg-gradient-to-r from-[#fbc02d] via-yellow-200 to-[#fbc02d] bg-clip-text text-transparent">Nosotros</span>
+			</h1>
+			<p class="mx-auto mt-6 max-w-2xl text-lg font-light text-white/70">
+				El congreso estudiantil de psicología más importante del sur del Perú, impulsado por pasión, propósito y comunidad.
+			</p>
+		</div>
+	</section>
+
+	<!-- Mission, Vision & Gallery -->
+	<MissionVisionGallery />
+</Layout>

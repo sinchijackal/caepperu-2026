@@ -2,37 +2,20 @@
 // Header - Navigation bar
 // ------------
 // Description: navigation bars offer a persistent and convenient way to switch between primary destinations in an app.
-// Structure:
-// - Logo: the logo of the website
-// - Menu toggle: the mobile menu toggle of the navigation bar
-// - Navigation Links: the navigation links of the menu
-// - Actions: action buttons for the navigation bar
-// - Theme Switcher: the mode (light/dark) switcher of the website
-
-// Reference: https://wind-ui.com/components/navbars/
 
 // Components
-// - UI
 import { Icon } from 'astro-icon/components'
-import Button from './Button.astro'
 import Switcher from './ModeSwitcher.astro'
 
 // Data
 import { navigationBarData } from '../../config/navigationBar'
-const { logo, navItems, navActions } = navigationBarData
+const { logo, navItems } = navigationBarData
 
 // Determine current path
 const path = new URL(Astro.request.url).pathname
 function isActivePath(currentPath: string): boolean {
 	return path === currentPath || path === `${currentPath}/`
 }
-
-// Type assertion for navActions to ensure type safety
-const savedNavActions = navActions.map((action) => ({
-	...action,
-	size: action.size as 'base' | 'lg' | 'sm',
-	style: action.style as 'primary' | 'secondary' | 'neutral'
-}))
 ---
 
 <header class="header">
@@ -40,11 +23,14 @@ const savedNavActions = navActions.map((action) => ({
 		<nav aria-label="main navigation" role="navigation" class="header__nav">
 			<!-- Logo -->
 			<a href="/" class="header__logo">
-				<img src={logo.src} alt={logo.alt} width="48" height="48" />
-				<span>{logo.text}</span>
+				<img src={logo.src} alt={logo.alt} class="h-14 lg:h-16 w-auto transition-transform duration-300 hover:scale-105" />
+				<span
+					class="bg-gradient-to-r from-white via-pink-100 to-pink-300 bg-clip-text text-2xl lg:text-3xl font-extrabold tracking-tight text-transparent transition-all duration-300 hover:scale-105"
+					>{logo.text_s}</span
+				>
 			</a>
 
-			<!-- Menu toggle -->
+			<!-- Menu toggle (Mobile) -->
 			<button
 				id="header-toggle"
 				class="header__toggle"
@@ -98,20 +84,114 @@ const savedNavActions = navActions.map((action) => ({
 						</li>
 					))
 				}
+
+				<!-- Mobile-only actions (inside the scrollable drawer) -->
+				<li class="mt-8 flex flex-col gap-3.5 px-6 pb-12 lg:hidden">
+					<div class="text-[11px] font-bold uppercase tracking-widest text-neutral-400">
+						Portal & Registro
+					</div>
+					<a
+						href="https://app.caepperu.com/register"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="group flex w-full items-center justify-center gap-2 rounded-full border border-pink-400/40 bg-gradient-to-r from-pink-600 via-rose-600 to-pink-500 py-3.5 text-sm font-bold tracking-wide text-white shadow-[0_0_20px_rgba(225,29,72,0.4)] transition-all duration-300 active:scale-95"
+					>
+						<span>Inscríbete Ahora</span>
+						<svg
+							class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2.5"
+								d="M13 7l5 5m0 0l-5 5m5-5H6"
+							></path>
+						</svg>
+					</a>
+
+					<a
+						href="https://app.caepperu.com"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="group flex w-full items-center justify-center gap-2 rounded-full border border-neutral-600/50 bg-neutral-800/60 py-3.5 text-sm font-semibold text-neutral-300 backdrop-blur-md transition-all duration-300 hover:border-neutral-400 hover:bg-neutral-700/80 hover:text-white active:scale-95"
+					>
+						<svg
+							class="h-4 w-4 text-neutral-400 transition-transform duration-300 group-hover:scale-110 group-hover:text-neutral-200"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+							<polyline points="10 17 15 12 10 7"></polyline>
+							<line x1="15" y1="12" x2="3" y2="12"></line>
+						</svg>
+						<span>Iniciar Sesión</span>
+					</a>
+				</li>
 			</ul>
 
-			<!-- Theme Switcher -->
-			<Switcher />
+			<!-- Desktop Actions & Switcher -->
+			<div class="hidden items-center gap-3 lg:flex lg:ml-auto">
+				<!-- Buttons Pill Container -->
+				<div class="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] p-1 shadow-lg shadow-black/20 backdrop-blur-xl transition-all duration-300 hover:border-white/25">
+					<!-- Iniciar Sesión (Sleek Neutral Gray Pill) -->
+					<a
+						href="https://app.caepperu.com"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="group inline-flex items-center gap-2 rounded-full border border-neutral-600/50 bg-neutral-800/50 px-4 py-2 text-xs xl:text-sm font-semibold text-neutral-300 backdrop-blur-md transition-all duration-300 hover:border-neutral-400/60 hover:bg-neutral-700/70 hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.08)] active:scale-95"
+					>
+						<svg
+							class="h-4 w-4 text-neutral-400 transition-transform duration-300 group-hover:scale-110 group-hover:text-neutral-200"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+							<polyline points="10 17 15 12 10 7"></polyline>
+							<line x1="15" y1="12" x2="3" y2="12"></line>
+						</svg>
+						<span>Iniciar Sesión</span>
+					</a>
 
-			<!-- Navigation action buttons -->
-			<div class="header__actions">
-				{
-					savedNavActions.map((action) => (
-						<Button classes="flex-auto" size={action.size} style={action.style} modal="signup">
-							{action.name}
-						</Button>
-					))
-				}
+					<!-- Inscríbete (Hero Gradient CTA Pill) -->
+					<a
+						href="https://app.caepperu.com/register"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="group relative inline-flex items-center gap-2 rounded-full border border-pink-400/50 bg-gradient-to-r from-pink-600 via-rose-600 to-pink-500 px-5 py-2 text-xs xl:text-sm font-bold tracking-wide text-white shadow-[0_0_18px_rgba(225,29,72,0.4)] transition-all duration-300 hover:from-pink-500 hover:to-rose-500 hover:shadow-[0_0_28px_rgba(225,29,72,0.65)] hover:scale-105 active:scale-95"
+					>
+						<span>Inscríbete</span>
+						<svg
+							class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2.5"
+								d="M13 7l5 5m0 0l-5 5m5-5H6"
+							></path>
+						</svg>
+					</a>
+				</div>
+
+				<!-- Subtle Vertical Separator -->
+				<div class="h-6 w-px bg-white/20"></div>
+
+				<!-- Switcher -->
+				<Switcher />
 			</div>
 		</nav>
 	</div>
@@ -119,37 +199,60 @@ const savedNavActions = navActions.map((action) => ({
 
 <style>
 	.header {
-		@apply sticky top-0 z-20 w-full animate-fadeInShadowLight [animation-range:0%_20rem] [animation-timeline:scroll()] before:absolute after:absolute after:left-0 after:top-full after:z-10 after:block after:h-px after:w-full lg:after:hidden dark:animate-fadeInShadowDark dark:[animation-range:0%_20rem] dark:[animation-timeline:scroll()];
+		@apply fixed top-0 z-20 w-full transition-all duration-500 before:absolute after:absolute after:left-0 after:top-full after:z-10 after:block after:h-px after:w-full lg:after:hidden;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.header * {
+		outline: none !important;
+	}
+	.header--scrolled {
+		@apply bg-[#1a0b2e]/85 shadow-lg backdrop-blur-xl dark:bg-[#0f051a]/95;
 	}
 	.header:before {
-		@apply block h-full w-full bg-white/90 lg:backdrop-blur-sm dark:bg-neutral-900/90;
+		@apply block h-full w-full transition-all duration-500;
 	}
 	.header__container {
-		@apply container relative mx-auto px-6;
+		@apply container relative mx-auto w-full px-4;
 	}
 	.header__logo {
 		@apply flex flex-auto items-center gap-2 whitespace-nowrap py-3 font-headings text-2xl font-black tracking-wider focus:outline-none;
 	}
 	.header__nav {
-		@apply flex h-[5.5rem] items-stretch gap-6 font-medium text-neutral-700 lg:justify-between dark:text-neutral-50;
+		@apply flex h-[5rem] lg:h-[5.5rem] items-center gap-4 lg:gap-6 font-medium text-white justify-between;
 	}
 	.header__menu {
-		@apply invisible absolute left-0 top-0 z-[-1] ml-auto h-dvh w-full justify-center overflow-hidden overflow-y-auto overscroll-contain bg-white/90 px-8 py-[6rem] font-medium opacity-0 transition-[opacity,visibility] duration-300 lg:visible lg:relative lg:top-0 lg:z-0 lg:flex lg:h-full lg:w-auto lg:items-stretch lg:overflow-visible lg:bg-white/0 lg:px-0 lg:py-0 lg:pt-0 lg:opacity-100 dark:bg-neutral-900/90 dark:lg:bg-transparent;
+		@apply invisible absolute left-0 top-0 ml-auto h-dvh w-full justify-center overflow-hidden overflow-y-auto overscroll-contain bg-[#1a0b2e]/95 px-8 py-[6rem] font-medium opacity-0 transition-[opacity,visibility,z-index] duration-300 lg:visible lg:relative lg:top-0 lg:z-0 lg:flex lg:h-full lg:w-auto lg:items-center lg:overflow-visible lg:bg-transparent lg:px-0 lg:py-0 lg:pt-0 lg:opacity-100 dark:bg-[#0f051a]/95 lg:dark:bg-transparent;
 	}
 	.header__menu--open {
-		@apply visible opacity-100 backdrop-blur-sm;
+		@apply visible z-40 opacity-100 backdrop-blur-xl;
 	}
 	.header__menu-item {
-		@apply relative flex cursor-pointer flex-col items-stretch lg:flex-row;
+		@apply relative flex cursor-pointer flex-col items-stretch lg:flex-row lg:items-center;
 	}
 	.header__menu-link {
-		@apply relative flex items-center gap-1 py-4 transition-colors duration-300 hover:text-primary-500 focus:text-primary-600 focus:outline-none focus-visible:outline-none lg:px-6 [&.active]:text-primary-500;
+		@apply relative flex items-center gap-1 py-2 lg:py-3 transition-all duration-300 hover:text-white focus:text-white focus:outline-none focus-visible:outline-none lg:px-3 xl:px-4 text-sm font-semibold;
+		@apply [&.active]:font-bold [&.active]:text-amber-100;
+	}
+	/* Efecto de línea animada para Hover y Active */
+	.header__menu-link::after {
+		content: '';
+		@apply absolute bottom-0 left-3 right-3 h-0.5 origin-center scale-x-0 rounded-full bg-purple-400 transition-transform duration-300 ease-out;
+	}
+	.header__menu-link:hover::after,
+	.header__menu-link.active::after {
+		@apply scale-x-100;
+	}
+	.header__menu-link.active::after {
+		@apply bg-purple-400;
+	}
+	.header__menu-link:hover {
+		@apply text-purple-400;
 	}
 	.header__menu-chevron {
 		@apply h-4 w-4 transition-transform [.header\_\_menu-item.open_&]:rotate-180;
 	}
 	.header__submenu {
-		@apply left-0 top-full hidden animate-dropdown rounded bg-neutral-300/10 px-4 lg:absolute lg:min-w-48 lg:rounded-t-none lg:bg-white/90 lg:p-0 lg:shadow-lg lg:shadow-neutral-700/5 lg:backdrop-blur-sm dark:bg-neutral-500/10 lg:dark:bg-neutral-900/90 lg:dark:shadow-neutral-950/50 [.header\_\_menu-item.open_&]:block;
+		@apply left-0 top-full hidden animate-dropdown rounded bg-neutral-300/10 px-4 lg:absolute lg:min-w-48 lg:rounded-t-none lg:bg-white lg:p-0 lg:shadow-lg lg:shadow-neutral-700/5 dark:bg-neutral-500/10 lg:dark:bg-[#1a0b2e] lg:dark:shadow-neutral-950/50 [.header\_\_menu-item.open_&]:block;
 	}
 	.header__submenu-item {
 		@apply hidden [.header\_\_menu-item.open_&]:block;
@@ -158,13 +261,13 @@ const savedNavActions = navActions.map((action) => ({
 		@apply px-8 py-4 hover:text-primary-500 [.header\_\_menu-item.open_&]:flex;
 	}
 	.header__toggle {
-		@apply relative order-10 block h-10 w-10 self-center lg:hidden [&--open]:visible [&--open]:opacity-100;
+		@apply relative z-50 order-10 block h-10 w-10 self-center lg:hidden [&--open]:visible [&--open]:opacity-100;
 	}
 	.header__toggle-inner {
 		@apply absolute left-1/2 top-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform;
 	}
 	.header__toggle-inner span {
-		@apply absolute block h-0.5 transform rounded-full bg-neutral-900 transition-all duration-300 dark:bg-white;
+		@apply absolute block h-0.5 transform rounded-full bg-current transition-all duration-300;
 	}
 	.header__toggle-inner span:nth-child(1) {
 		@apply w-9/12 -translate-y-2 [.header\_\_toggle--open_&]:w-6 [.header\_\_toggle--open_&]:translate-y-0 [.header\_\_toggle--open_&]:rotate-45;
@@ -174,8 +277,5 @@ const savedNavActions = navActions.map((action) => ({
 	}
 	.header__toggle-inner span:nth-child(3) {
 		@apply w-1/2 origin-top-left translate-y-2 [.header\_\_toggle--open_&]:w-0;
-	}
-	.header__actions {
-		@apply fixed bottom-0 left-0 hidden w-full items-center justify-between gap-4 border-t border-neutral-100 bg-white px-6 py-4 lg:relative lg:ml-auto lg:flex lg:w-auto lg:border-none lg:bg-transparent lg:px-0 lg:py-0 dark:border-neutral-800 dark:bg-neutral-950 lg:dark:bg-transparent [.header\_\_menu--open~&]:flex;
 	}
 </style>

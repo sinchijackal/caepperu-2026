@@ -1,0 +1,589 @@
+---
+// src/components/caep/ProgramPricing.astro
+
+const programDays = [
+	{
+		day: 'Día 1',
+		date: 'Lun 14 Set',
+		title: 'Inauguración + conferencias magistrales',
+		color: '#4a148c',
+		events: [
+			{ time: 'Todo el día', title: 'Inscripciones y entrega de material', icon: '⭐' },
+			{ time: '14:00', title: 'Inauguración oficial', icon: '🎊' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 1', icon: '🎤' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 2', icon: '🎤' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 3', icon: '🎤' },
+			{ time: '21:00', title: 'Fiesta de Bienvenida', icon: '🎉' }
+		]
+	},
+	{
+		day: 'Día 2',
+		date: 'Mar 15 Set',
+		title: 'Ponencias estudiantiles + conferencias magistrales',
+		color: '#6a1b9a',
+		events: [
+			{ time: '10:30 – 11:30', title: 'Ponencia Estudiantil 4', icon: '🎓' },
+			{ time: '12:00 – 13:00', title: 'Ponencia 5', icon: '🎤' },
+			{ time: '13:00', title: 'Receso', icon: '☕' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 6', icon: '🎤' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 7', icon: '🎤' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 8', icon: '🎤' },
+			{ time: '21:00', title: 'Noche Cultural', icon: '🎭' }
+		]
+	},
+	{
+		day: 'Día 3',
+		date: 'Mié 16 Set',
+		title: 'Networking',
+		color: '#283593',
+		events: [
+			{ time: '10:30 – 11:30', title: 'Ponencia Estudiantil 9', icon: '🎓' },
+			{ time: '12:00 – 13:00', title: 'Ponencia 10', icon: '🎤' },
+			{ time: '13:00', title: 'Receso', icon: '☕' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 11', icon: '🎤' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 12', icon: '🎤' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 13', icon: '🎤' },
+			{ time: '21:00', title: 'Noche Libre', icon: '🌙' }
+		]
+	},
+	{
+		day: 'Día 4',
+		date: 'Jue 17 Set',
+		title: 'Actividades sociales + integración',
+		color: '#00695c',
+		events: [
+			{ time: '10:30 – 11:30', title: 'Ponencia Estudiantil 14', icon: '🎓' },
+			{ time: '12:00 – 13:00', title: 'Ponencia 15', icon: '🎤' },
+			{ time: '13:00', title: 'Receso', icon: '☕' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 16', icon: '🎤' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 17', icon: '🎤' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 18', icon: '🎤' },
+			{ time: '21:00', title: 'Fiesta de Clausura', icon: '🏆' }
+		]
+	},
+	{
+		day: 'Día 5',
+		date: 'Vie 18 Set',
+		title: 'Clausura + despedida',
+		color: '#e65100',
+		events: [{ time: 'Todo el día', title: 'Reto CAEP – Día Deportivo (Opcional)', icon: '🏃' }]
+	}
+]
+
+let apiPlans: any[] = []
+try {
+	const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/plans/list`)
+	if (res.ok) {
+		const data = await res.json()
+		apiPlans = data.plans || []
+	}
+} catch (error) {
+	console.error('Error al obtener los planes:', error)
+}
+
+const getPlanPrice = (planName: string, defaultPrice: string) => {
+	const plan = apiPlans.find((p: any) => p.name === planName)
+	return plan ? parseInt(plan.price).toString() : defaultPrice
+}
+
+const pricing = [
+	{
+		type: 'Individual',
+		apiName: 'Individual',
+		description: 'Pase general para 1 persona',
+		subDescription: '* Precio por persona',
+		price: getPlanPrice('Individual', '00.00'),
+		btnText: '¡Inscríbete ya!',
+		bgClass: 'bg-gradient-to-br from-[#4a148c] to-[#2c1065]',
+		textClass: 'text-white',
+		priceClass: 'text-white',
+		btnClass: 'bg-[#fbc02d] text-[#4a148c] hover:bg-yellow-500'
+	},
+	{
+		type: 'Grupo de 5',
+		apiName: 'Grupo de 5',
+		description: 'Ideal para grupos de amigos',
+		subDescription: '* Precio por persona',
+		price: getPlanPrice('Grupo de 5', '00.00'),
+		btnText: '¡Inscríbete ya!',
+		bgClass: 'bg-gradient-to-br from-[#fbc02d] to-[#f9a825]',
+		textClass: 'text-[#4a148c]',
+		priceClass: 'text-[#4a148c]',
+		btnClass: 'bg-[#d32f2f] text-white hover:bg-red-700'
+	},
+	{
+		type: 'Grupo de 10+',
+		apiName: 'Grupo de 10',
+		description: 'Mejor tarifa para delegaciones',
+		subDescription: '* Precio por persona',
+		price: getPlanPrice('Grupo de 10', '00.00'),
+		btnText: '¡Inscríbete ya!',
+		bgClass: 'bg-gradient-to-br from-[#d32f2f] to-[#b71c1c]',
+		textClass: 'text-white',
+		priceClass: 'text-white',
+		btnClass: 'bg-[#fbc02d] text-[#4a148c] hover:bg-yellow-500'
+	}
+]
+---
+
+<section class="program-pricing-section overflow-x-hidden bg-white py-20 dark:bg-transparent">
+	<div class="max-w-8xl container mx-auto px-4">
+		<div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
+			<!-- Left Column: Programa (Master → Detail) -->
+			<div id="programa" class="min-w-0 overflow-hidden">
+				<div class="mb-10 flex items-center justify-center">
+					<div
+						class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-transparent via-purple-200 to-purple-400"
+					>
+					</div>
+					<h2
+						class="px-6 text-center text-2xl font-bold leading-none text-[#4a148c] md:text-3xl dark:text-white"
+					>
+						Programa del Congreso
+					</h2>
+					<div
+						class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-purple-400 via-purple-200 to-transparent"
+					>
+					</div>
+				</div>
+
+				<!-- Slide wrapper -->
+				<div id="program-slider" class="relative w-full overflow-hidden">
+					<!-- MASTER VIEW: Lista de días -->
+					<div id="program-master" class="duration-400 transition-transform ease-in-out">
+						<div class="space-y-3">
+							{
+								programDays.map((item, i) => (
+									<button
+										data-day={i}
+										class="program-day-btn group flex w-full cursor-pointer items-center rounded-xl border border-l-4 bg-white p-4 text-left shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-white/20 dark:bg-white/[0.03] dark:backdrop-blur-md dark:hover:bg-white/[0.06]"
+										style={`border-left-color:${item.color};`}
+									>
+										<div
+											class="mr-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg shadow-inner transition-transform duration-300 group-hover:scale-105"
+											style={`background:linear-gradient(135deg,${item.color},${item.color}bb);`}
+										>
+											<svg
+												class="h-6 w-6 text-white"
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="2"
+													d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+												/>
+											</svg>
+										</div>
+										<div class="min-w-0 flex-1">
+											<span
+												class="mb-0.5 block text-sm font-bold dark:brightness-125 dark:saturate-150"
+												style={`color:${item.color};`}
+											>
+												{item.day} · {item.date}
+											</span>
+											<span class="block truncate text-sm font-medium text-gray-700 dark:text-gray-200">
+												{item.title}
+											</span>
+										</div>
+										<svg
+											class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400 transition-transform duration-300 group-hover:translate-x-1 dark:text-white/50"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M9 5l7 7-7 7"
+											/>
+										</svg>
+									</button>
+								))
+							}
+						</div>
+
+						<!-- CTA -->
+						<div class="mt-8 flex justify-center">
+							<a
+								href="/programa"
+								class="group inline-flex items-center gap-2 rounded-full border-2 border-[#3b1778]/40 bg-[#3b1778]/5 px-7 py-3 text-sm font-semibold text-[#4a148c] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#3b1778] hover:bg-[#3b1778]/10 dark:border-purple-500/40 dark:bg-purple-500/5 dark:text-purple-300 dark:hover:border-purple-400"
+							>
+								<svg
+									class="h-4 w-4"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+									></path>
+								</svg>
+								Ver programa completo
+								<svg
+									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+								</svg>
+							</a>
+						</div>
+					</div>
+
+					<!-- DETAIL VIEW: Detalle del día seleccionado -->
+					<div
+						id="program-detail"
+						class="duration-400 absolute inset-0 translate-x-full transition-transform ease-in-out will-change-transform"
+						style="visibility: hidden;"
+					>
+						<!-- Detail header -->
+						<div
+							id="detail-header"
+							class="mb-4 flex items-center justify-between rounded-xl p-4 text-white shadow-lg"
+						>
+							<button
+								id="program-back"
+								class="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-semibold backdrop-blur-sm transition-all hover:bg-white/30"
+							>
+								<svg
+									class="h-4 w-4"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M15 19l-7-7 7-7"></path>
+								</svg>
+								Volver
+							</button>
+							<div class="text-right">
+								<p
+									id="detail-day-label"
+									class="text-xs font-semibold uppercase tracking-widest text-white/75"
+								>
+								</p>
+								<p id="detail-day-date" class="text-base font-extrabold text-white">
+								</p>
+							</div>
+						</div>
+
+						<!-- Events list -->
+						<div
+							id="detail-events"
+							style="max-height:380px;overflow-y:auto;overflow-x:hidden;"
+						>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Right Column: Asegura tu lugar -->
+			<div id="precios" class="min-w-0">
+				<div class="mb-10 flex items-center justify-center">
+					<div
+						class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-transparent via-purple-200 to-purple-400"
+					>
+					</div>
+					<h2
+						class="px-6 text-center text-2xl font-bold leading-none text-[#4a148c] md:text-3xl dark:text-white"
+					>
+						Asegura tu lugar
+					</h2>
+					<div
+						class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-purple-400 via-purple-200 to-transparent"
+					>
+					</div>
+				</div>
+
+				<div class="flex flex-col gap-6 sm:flex-row">
+					{
+						pricing.map((tier) => (
+							<div
+								class={`flex flex-1 transform flex-col items-center justify-center rounded-2xl p-6 text-center shadow-xl transition-transform hover:-translate-y-2 ${tier.bgClass}`}
+							>
+								<h3 class={`mb-1 text-lg font-bold ${tier.textClass}`}>
+									{tier.type}
+								</h3>
+								{tier.description && (
+									<p
+										class={`text-sm font-medium opacity-90 ${tier.textClass} ${tier.subDescription ? 'mb-1' : 'mb-4'}`}
+									>
+										{tier.description}
+									</p>
+								)}
+								{tier.subDescription && (
+									<p
+										class={`mb-4 text-xs font-bold opacity-80 ${tier.textClass}`}
+									>
+										{tier.subDescription}
+									</p>
+								)}
+								<div class="mb-6 flex items-start justify-center">
+									<span class={`mr-1 mt-2 text-sm font-bold ${tier.priceClass}`}>
+										S/
+									</span>
+									<span
+										class={`text-5xl font-extrabold ${tier.priceClass}`}
+										data-plan-name={tier.apiName}
+									>
+										{tier.price}
+									</span>
+								</div>
+								<a
+									href="https://app.caepperu.com/register"
+									target="_blank"
+									rel="noopener noreferrer"
+									class={`block w-full rounded-lg px-4 py-2 text-center text-sm font-bold shadow-md transition-colors ${tier.btnClass}`}
+								>
+									{tier.btnText}
+								</a>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script
+	is:inline
+	define:vars={{
+		programData: programDays.map((d) => ({
+			day: d.day,
+			date: d.date,
+			color: d.color,
+			events: d.events
+		})),
+		apiUrl: import.meta.env.PUBLIC_API_URL
+	}}
+>
+	const data = programData
+
+	function setupProgramPricing() {
+		const master = document.getElementById('program-master')
+		const detail = document.getElementById('program-detail')
+		const backBtn = document.getElementById('program-back')
+		const detailHeader = document.getElementById('detail-header')
+		const detailDayLabel = document.getElementById('detail-day-label')
+		const detailDayDate = document.getElementById('detail-day-date')
+		const detailEvents = document.getElementById('detail-events')
+
+		if (!master || !detail || !backBtn) return
+
+		function showDetail(idx) {
+			const day = data[idx]
+
+			// Set the line color variable dynamically
+			const isDark = document.documentElement.classList.contains('dark')
+			const lineColor = isDark ? 'rgba(255, 255, 255, 0.2)' : `${day.color}40`
+			detailEvents.style.setProperty('--detail-timeline-line', lineColor)
+
+			detailHeader.style.background = `linear-gradient(135deg, ${day.color}, ${day.color}cc)`
+			detailDayLabel.textContent = day.day
+			detailDayDate.textContent = day.date
+
+			detailEvents.innerHTML = `
+				<div style="position:relative">
+					<!-- Vertical timeline line: behind circles -->
+					<div style="position:absolute;left:21px;top:0;bottom:0;width:2px;background:var(--detail-timeline-line);z-index:0"></div>
+
+					${day.events
+						.map(
+							(e, i) => `
+					<div class="detail-event-item" style="
+						display:flex;align-items:flex-start;gap:14px;
+						margin-bottom:14px;position:relative;
+						opacity:0;transform:translateX(20px);
+						animation:slideIn .35s ease forwards;
+						animation-delay:${i * 60}ms
+					">
+						<!-- Icon circle -->
+						<div style="
+							width:42px;height:42px;border-radius:50%;flex-shrink:0;
+							background:var(--detail-card-bg);
+							border:1.5px solid ${day.color}35;
+							display:flex;align-items:center;justify-content:center;
+							font-size:1.2rem;
+							position:relative;z-index:1;
+							box-shadow:0 0 0 4px ${day.color}10
+						">${e.icon}</div>
+
+						<!-- Content card -->
+						<div class="detail-event-card" style="
+							flex:1;background:var(--detail-card-bg);border-radius:14px;
+							border:1px solid var(--detail-card-border);
+							padding:10px 14px;
+							box-shadow:0 2px 8px var(--detail-shadow);
+							transition:transform .2s,box-shadow .2s;
+						">
+							<p style="margin:0;font-size:.875rem;font-weight:700;color:var(--detail-text-color);letter-spacing:-.01em">${e.title}</p>
+							<span style="
+								display:inline-block;margin-top:5px;
+								font-size:.7rem;font-weight:600;
+								background:${day.color}18;color:${day.color};
+								padding:2px 9px;border-radius:999px;
+								border:1px solid ${day.color}30
+							">🕐 ${e.time}</span>
+						</div>
+					</div>
+					`
+						)
+						.join('')}
+				</div>
+			`
+
+			const sliderHeight = master.scrollHeight
+			detail.style.minHeight = sliderHeight + 'px'
+
+			detail.style.visibility = 'visible'
+			master.style.transform = 'translateX(-100%)'
+			detail.style.transform = 'translateX(0)'
+		}
+
+		function showMaster() {
+			master.style.transform = 'translateX(0)'
+			detail.style.transform = 'translateX(100%)'
+			setTimeout(() => {
+				if (master.style.transform === 'translateX(0px)' || master.style.transform === 'translateX(0)') {
+					detail.style.visibility = 'hidden'
+				}
+			}, 400)
+		}
+
+		document.querySelectorAll('.program-day-btn').forEach((btn) => {
+			btn.addEventListener('click', () => showDetail(Number(btn.dataset.day)))
+		})
+
+		backBtn.addEventListener('click', showMaster)
+	}
+
+	// Fetch dinámico de precios en el cliente (para que varíen sin reconstruir el sitio estático)
+	const updatePrices = async () => {
+		try {
+			const res = await fetch(`${apiUrl}/plans/list`)
+			if (res.ok) {
+				const data = await res.json()
+				const plans = data.plans || []
+
+				document.querySelectorAll('[data-plan-name]').forEach((el) => {
+					const apiName = el.getAttribute('data-plan-name')
+					const plan = plans.find((p) => p.name === apiName)
+					if (plan) {
+						el.textContent = parseInt(plan.price).toString()
+					}
+				})
+			}
+		} catch (error) {
+			console.error('Error fetching dynamic plans client-side:', error)
+		}
+	}
+
+	// Inicialización
+	const init = () => {
+		setupProgramPricing()
+		updatePrices()
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init)
+	} else {
+		init()
+	}
+
+	// Soporte para Astro ClientRouter / ViewTransitions
+	document.addEventListener('astro:page-load', init)
+</script>
+
+<style>
+	@keyframes slideIn {
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+	#program-slider {
+		transition: height 0.35s ease;
+		will-change: height;
+	}
+	#program-master {
+		will-change: transform;
+	}
+
+	.program-pricing-section {
+		position: relative;
+		content-visibility: auto;
+		contain-intrinsic-size: 1px 1000px;
+	}
+
+	.detail-event-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 18px var(--detail-shadow-hover) !important;
+	}
+
+	:global(.dark) .program-pricing-section {
+		background-color: #190d27;
+		background-image:
+			radial-gradient(circle at 50% 0%, rgba(74, 20, 140, 0.15) 0%, transparent 50%),
+			linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+		background-size:
+			100% 100%,
+			40px 40px,
+			40px 40px;
+	}
+
+	/* Subtle scrollbar */
+	#detail-events::-webkit-scrollbar {
+		width: 6px;
+	}
+	#detail-events::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	#detail-events::-webkit-scrollbar-thumb {
+		background: var(--detail-scroll-thumb);
+		border-radius: 99px;
+	}
+	#detail-events::-webkit-scrollbar-thumb:hover {
+		background: var(--detail-scroll-thumb-hover);
+	}
+	#detail-events {
+		scrollbar-width: thin;
+		scrollbar-color: var(--detail-scroll-thumb) transparent;
+	}
+
+	:root {
+		--detail-card-bg: #ffffff;
+		--detail-card-border: #f3f0f8;
+		--detail-text-color: #1f0a3c;
+		--detail-shadow: rgba(74, 20, 140, 0.07);
+		--detail-shadow-hover: rgba(74, 20, 140, 0.12);
+		--detail-scroll-thumb: #d8c5ff;
+		--detail-scroll-thumb-hover: #c0a9ff;
+	}
+
+	:global(.dark) :root {
+		--detail-card-bg: rgba(255, 255, 255, 0.05);
+		--detail-card-border: rgba(255, 255, 255, 0.3);
+		--detail-text-color: #f8f5ff;
+		--detail-shadow: rgba(0, 0, 0, 0.3);
+		--detail-shadow-hover: rgba(0, 0, 0, 0.5);
+		--detail-scroll-thumb: #d8c5ff;
+		--detail-scroll-thumb-hover: #c0a9ff;
+	}
+</style>

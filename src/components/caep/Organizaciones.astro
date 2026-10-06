@@ -1,0 +1,127 @@
+---
+// src/components/caep/Organizaciones.astro
+import { Image } from 'astro:assets'
+
+// Importar Organizador y Auspiciador Académico
+import aepp from '../../assets/logos/partners/aepp.png'
+import colegio_sicologos from '../../assets/logos/partners/colegio_sicologos.jpg'
+
+// Importar Organizaciones Participantes
+import huchuy from '../../assets/logos/partners/huchuy.jpg'
+import ubuntu from '../../assets/logos/partners/ubuntu.jpg'
+import nanaykuna from '../../assets/logos/partners/nanaykuna.jpeg'
+import aeita from '../../assets/logos/partners/aeita.jpg'
+import ninos_fuego from '../../assets/logos/partners/ninos_fuego.jpeg'
+import espirales from '../../assets/logos/partners/espirales.jpg'
+import kawsaynin from '../../assets/logos/partners/kawsaynin.jpg'
+import club_leo_cusco from '../../assets/logos/partners/club_leo_cusco.jpg'
+import aech from '../../assets/logos/partners/aech.jpg'
+import peru_inka from '../../assets/logos/partners/peru_inka.jpeg'
+import cruz_sur from '../../assets/logos/partners/cruz_sur.png'
+import js_latin_travel from '../../assets/logos/partners/js_latin_travel.jpg'
+import luna_tours from '../../assets/logos/partners/luna_tours.jpg'
+import rotaract from '../../assets/logos/partners/rotaract.jpg'
+
+const participantes = [
+	{ image: huchuy, alt: 'Huchuy Yachaq', size: 'large' },
+	{ image: ubuntu, alt: 'Ubuntu - Jóvenes Voluntarios Perú', size: 'medium' },
+	{ image: nanaykuna, alt: 'Ñañaykuna', size: 'large' },
+	{ image: aeita, alt: 'eita - Equipo de Investigación y Trabajo en Autismo', size: 'medium' },
+	{ image: ninos_fuego, alt: 'ONG Los Niños del Fuego', size: 'large' },
+	{ image: espirales, alt: 'eSPiRales - Bienestar socio-emocional', size: 'medium' },
+	{ image: kawsaynin, alt: 'Kawsaynin - Sentir Estar Bien', size: 'medium' },
+	{ image: club_leo_cusco, alt: 'Club Leo Cusco', size: 'medium' },
+	{ image: aech, alt: 'AECH - Asociación de Estudiantes Cayetano Heredia', size: 'large' },
+	{ image: peru_inka, alt: 'Peru Inkas Collection', size: 'large' },
+	{ image: cruz_sur, alt: 'Cruz del Sur', size: 'large' },
+	{ image: js_latin_travel, alt: 'JC Latin Travel', size: 'large' },
+	{ image: luna_tours, alt: 'Luna Tours Cusco', size: 'large' },
+	{ image: rotaract, alt: 'Rotaract Club', size: 'medium' }
+]
+---
+
+<section id="organizaciones" class="relative border-b-8 border-[#3b1778] bg-white py-20 dark:bg-[#150a21] transition-colors duration-300">
+	<!-- Fondo Decorativo Sutil -->
+	<div class="pointer-events-none absolute left-0 top-0 h-full w-full overflow-hidden">
+		<div class="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-purple-200 opacity-20 blur-3xl dark:bg-purple-900/30"></div>
+		<div class="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-amber-200 opacity-20 blur-3xl dark:bg-amber-900/20"></div>
+	</div>
+
+	<div class="container relative mx-auto px-4">
+		<!-- Header de Sección Estandarizado -->
+		<div class="mx-auto mb-16 flex max-w-5xl items-center justify-center">
+			<div class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-transparent via-purple-200 to-purple-400 dark:via-purple-800 dark:to-purple-500"></div>
+			<h2 class="px-6 text-center text-3xl font-extrabold leading-none tracking-tight text-[#4a148c] dark:text-white md:text-4xl uppercase font-headings">
+				Organizaciones
+			</h2>
+			<div class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-purple-400 via-purple-200 to-transparent dark:from-purple-500 dark:via-purple-800"></div>
+		</div>
+
+		<!-- Grid Principal de Contenido -->
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+			
+			<!-- Columna Izquierda: Organizador y Auspiciador -->
+			<div class="lg:col-span-4 flex flex-col gap-12">
+				<!-- Organizador -->
+				<div class="flex flex-col items-center">
+					<h3 class="mb-6 text-center font-headings text-xs font-extrabold tracking-widest text-slate-400 dark:text-purple-300/40 uppercase">
+						Organizador
+					</h3>
+					<div class="flex items-center justify-center w-full max-w-[320px] h-48 transition-all duration-300 hover:scale-105">
+						<Image 
+							src={aepp} 
+							alt="A.E.P.P - Asociación de Estudiantes de Psicología del Perú" 
+							class="max-h-44 max-w-full object-contain dark:brightness-0 dark:invert"
+						/>
+					</div>
+				</div>
+
+				<!-- Auspiciador Académico -->
+				<div class="flex flex-col items-center">
+					<h3 class="mb-6 text-center font-headings text-xs font-extrabold tracking-widest text-slate-400 dark:text-purple-300/40 uppercase">
+						Auspiciador Académico
+					</h3>
+					<div class="flex items-center justify-center w-full max-w-[320px] h-48 transition-all duration-300 hover:scale-105">
+						<Image 
+							src={colegio_sicologos} 
+							alt="Colegio de Psicólogos del Perú - Cusco y Madre de Dios" 
+							class="max-h-44 max-w-full object-contain"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<!-- Columna Derecha: Organizaciones Participantes -->
+			<div class="lg:col-span-8 flex flex-col">
+				<h3 class="mb-6 text-center lg:text-left font-headings text-xs font-extrabold tracking-widest text-slate-400 dark:text-purple-300/40 uppercase">
+					Organizaciones Participantes
+				</h3>
+				
+				<div class="flex flex-wrap justify-center lg:justify-start items-center gap-x-2 gap-y-1">
+					{participantes.map((logo) => {
+						let sizeClass = "h-28 w-52";
+						let imgClass = "max-h-24";
+						if (logo.size === 'large') {
+							sizeClass = "h-36 w-64";
+							imgClass = "max-h-32";
+						} else if (logo.size === 'small') {
+							sizeClass = "h-24 w-40";
+							imgClass = "max-h-20";
+						}
+						return (
+							<div class={`flex items-center justify-center transition-all duration-300 hover:scale-110 group ${sizeClass}`}>
+								<Image 
+									src={logo.image} 
+									alt={logo.alt} 
+									title={logo.alt}
+									class={`${imgClass} max-w-full object-contain transition-all duration-300 group-hover:scale-105`} 
+								/>
+							</div>
+						)
+					})}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>

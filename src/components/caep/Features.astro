@@ -1,0 +1,75 @@
+---
+// src/components/caep/Features.astro
+const features = [
+	{
+		title: 'Aprende de especialistas reconocidos',
+		icon: `<svg class="w-10 h-10 text-[#4a148c]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`,
+		bgColor: 'bg-purple-100'
+	},
+	{
+		title: 'Conecta con estudiantes de todo el país',
+		icon: `<svg class="w-10 h-10 text-[#d32f2f]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>`,
+		bgColor: 'bg-orange-100'
+	},
+	{
+		title: 'Participa en talleres dinámicos y vivenciales',
+		icon: `<svg class="w-10 h-10 text-[#fbc02d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+		bgColor: 'bg-yellow-100'
+	},
+	{
+		title: 'Disfruta eventos sociales únicos',
+		icon: `<svg class="w-10 h-10 text-[#4a148c]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>`,
+		bgColor: 'bg-purple-100'
+	},
+	{
+		title: 'Recibe certificación oficial',
+		icon: `<svg class="w-10 h-10 text-[#fbc02d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>`,
+		bgColor: 'bg-yellow-100'
+	}
+]
+---
+
+<section class="border-b-8 border-[#3b1778] bg-white py-16 dark:bg-[#190d27] [content-visibility:auto] contain-intrinsic-size-1000">
+	<div class="container mx-auto px-4">
+		<div class="mx-auto mb-12 flex max-w-5xl items-center justify-center">
+			<div
+				class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-transparent via-purple-200 to-purple-400"
+			>
+			</div>
+			<h2
+				class="px-6 text-center text-3xl font-bold leading-none text-[#4a148c] dark:text-white"
+			>
+				¿Por qué vivir el CAEP?
+			</h2>
+
+			<div
+				class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-purple-400 via-purple-200 to-transparent"
+			>
+			</div>
+		</div>
+		<p class="mx-auto mb-12 max-w-2xl text-center text-lg text-gray-600 dark:text-gray-400">
+			No es solo un congreso. Es una <span
+				class="font-bold text-[#4a148c] dark:text-purple-300"
+				>experiencia académica, social y personal</span
+			> que marcará tu camino como futuro profesional.
+		</p>
+
+		<div
+			class="mx-auto flex max-w-6xl flex-wrap items-start justify-center gap-8 md:justify-between"
+		>
+			{
+				features.map((feature) => (
+					<div class="flex w-36 flex-col items-center text-center">
+						<div
+							class={`mb-4 flex h-20 w-20 items-center justify-center rounded-full shadow-md ${feature.bgColor}`}
+							set:html={feature.icon}
+						/>
+						<p class="text-sm font-semibold leading-tight text-gray-800 dark:text-gray-300">
+							{feature.title}
+						</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

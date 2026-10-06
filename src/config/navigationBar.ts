@@ -5,6 +5,7 @@ export interface Logo {
 	src: string
 	alt: string
 	text: string
+	text_s: string
 }
 
 export interface NavSubItem {
@@ -21,8 +22,10 @@ export interface NavItem {
 export interface NavAction {
 	name: string
 	link: string
-	style: string
-	size: string
+	style?: string
+	size?: string
+	variation?: string
+	icon?: string
 }
 
 export interface NavData {
@@ -34,24 +37,38 @@ export interface NavData {
 export const navigationBarData: NavData = {
 	logo: {
 		src: '/logo.svg',
-		alt: 'The tailwind astro theme',
-		text: 'Foxi.'
+		alt: 'CAEPPERU Cusco 2026',
+		text: 'CAEPPERU Cusco 2026',
+		text_s: 'Cusco'
 	},
 	navItems: [
-		{ name: 'Home', link: '/' },
-		{ name: 'Pricing', link: '/pricing' },
-		{ name: 'Features', link: '/features' },
-		{
-			name: 'Resources',
-			link: '#',
-			submenu: [
-				{ name: 'Blog', link: '/blog' },
-				{ name: 'Changelog', link: '/changelog' },
-				{ name: 'FAQ', link: '/faq' },
-				{ name: 'Terms', link: '/terms' }
-			]
-		},
-		{ name: 'Contact', link: '/contact' }
+		{ name: 'Inicio', link: '/' },
+		{ name: 'Programa', link: '/#programa' },
+		{ name: 'Precios', link: '/#precios' },
+		{ name: 'Ponentes', link: '/#ponentes' },
+		// {
+		// 	name: 'Recursos',
+		// 	link: '#',
+		// 	submenu: [
+		// 		{ name: 'Blog', link: '/blog' },
+		// 	]
+		// },
+		{ name: 'Nosotros', link: '/#nosotros' },
+		{ name: 'Certificado', link: '/verify' },
+		// { name: 'Contacto', link: '/contact' }
 	],
-	navActions: [{ name: 'Try it now', link: '/', style: 'primary', size: 'lg' }]
+	navActions: [
+		{
+			name: 'Iniciar Sesión',
+			link: 'https://app.caepperu.com',
+			style: 'outline',
+			icon: 'login'
+		},
+		{
+			name: 'Inscríbete',
+			link: 'https://app.caepperu.com/register',
+			style: 'primary',
+			icon: 'arrow'
+		}
+	]
 }

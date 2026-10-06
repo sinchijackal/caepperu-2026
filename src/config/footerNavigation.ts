@@ -9,7 +9,8 @@ export interface Logo {
 
 export interface FooterAbout {
 	title: string
-	aboutText: string
+	aboutTextTitle: string
+	aboutTextDesc: string
 	logo: Logo
 }
 
@@ -35,77 +36,65 @@ export interface FooterData {
 
 export const footerNavigationData: FooterData = {
 	footerAbout: {
-		title: 'Foxi.',
-		aboutText:
-			'Expertly made, responsive, accessible components in React and HTML ready to be used on your website or app. Just copy and paste them on your Tailwind CSS project.',
+		title: 'CAEP CUSCO 2026',
+		aboutTextTitle: '¿Estás listo para vivir el CAEP?',
+		aboutTextDesc: 'Forma parte del evento que reúne a los futuros psicólogos del Perú.',
 		logo: {
 			src: '/logo.svg',
-			alt: 'The tailwind astro theme',
-			text: 'Foxi.'
+			alt: 'CAEP CUSCO 2026',
+			text: 'CAEP.'
 		}
 	},
 	footerColumns: [
 		{
-			category: 'Product',
+			category: 'El Congreso',
 			subCategories: [
 				{
-					subCategory: 'Features',
-					subCategoryLink: '/features'
-				},
-				{
-					subCategory: 'FAQ',
-					subCategoryLink: '/faq'
-				},
-				{
-					subCategory: 'Pricing',
-					subCategoryLink: '/pricing'
-				},
-				{
-					subCategory: 'Changelog',
-					subCategoryLink: '/changelog'
-				},
-				{
-					subCategory: 'Terms',
-					subCategoryLink: '/terms'
-				}
-			]
-		},
-		{
-			category: 'About us',
-			subCategories: [
-				{
-					subCategory: 'About us',
+					subCategory: 'Inicio',
 					subCategoryLink: '/'
 				},
 				{
-					subCategory: 'News',
-					subCategoryLink: '/blog'
+					subCategory: 'Nosotros',
+					subCategoryLink: '/#nosotros'
 				},
 				{
-					subCategory: 'Careers',
-					subCategoryLink: '/blog'
+					subCategory: 'Programa',
+					subCategoryLink: '/#programa'
+				},
+				{
+					subCategory: 'Precios',
+					subCategoryLink: '/#precios'
 				}
 			]
 		},
 		{
-			category: 'Get in touch',
+			category: 'Enlaces Rápidos',
 			subCategories: [
 				{
-					subCategory: 'Contact',
-					subCategoryLink: '/contact'
+					subCategory: 'Inscríbete Ahora',
+					subCategoryLink: 'https://app.caepperu.com/register'
 				},
 				{
-					subCategory: 'Support',
-					subCategoryLink: '/contact'
+					subCategory: 'Iniciar Sesión',
+					subCategoryLink: 'https://app.caepperu.com'
 				},
 				{
-					subCategory: 'Join us',
-					subCategoryLink: '/contact'
+					subCategory: 'Verificar Certificado',
+					subCategoryLink: '/verify'
+				}
+			]
+		},
+		{
+			category: 'Contacto',
+			subCategories: [
+				{
+					subCategory: 'Informes WhatsApp',
+					subCategoryLink: 'https://api.whatsapp.com/send?phone=+51936202205&text=Hola%20CAEP%20quiero%20inscribirme%20en%20el%20congreso'
 				}
 			]
 		}
 	],
 	subFooter: {
-		copywriteText: '© Foxi 2024.'
+		copywriteText: '© CAEPPERU 2026'
 	}
 }

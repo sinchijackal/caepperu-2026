@@ -2,28 +2,32 @@
 // Components
 // - Layout
 import Layout from '../layouts/Layout.astro'
-// - UI
-import Hero from '../components/blocks/hero/HomeCTA.astro'
-import Features from '../components/blocks/features/FeatureCards.astro'
-import Testimonial from '../components/blocks/testimonials/BasicDark.astro'
-import HighlightBlocks from '../components/blocks/highlights/HightlightRows.astro'
-import CTA from '../components/blocks/CTA/BasicDark.astro'
+// - CAEP Components
+import Hero from '../components/caep/Hero.astro'
+import Features from '../components/caep/Features.astro'
+import VideoSection from '../components/caep/VideoSection.astro'
+import Speakers from '../components/caep/Speakers.astro'
+import ProgramPricing from '../components/caep/ProgramPricing.astro'
+import DiscoverFooter from '../components/caep/DiscoverFooter.astro'
+import MissionVisionGallery from '../components/caep/MissionVisionGallery.astro'
+import Organizaciones from '../components/caep/Organizaciones.astro'
 
 // Content
-// - Testimonial background
-import testimonialBackground from '../assets/testimonial-bg-01.webp'
 // - SEO
 const SEO = {
-	title: 'Foxi | Your Productivity Toolkit',
+	title: 'CAEP CUSCO 2026 | Psicología 360',
 	description:
-		'Foxi is a powerful productivity toolkit designed to enhance your workflow and boost your productivity. With features like analytics, security, and integrations, Foxi is the perfect solution for your business.'
+		'Congreso de Psicología 360: explora, aprende, evoluciona. Vive la experiencia CAEP en Cusco 2026.'
 }
 ---
 
 <Layout title={SEO.title} description={SEO.description}>
 	<Hero />
 	<Features />
-	<Testimonial bg={testimonialBackground} bgPosition="right" />
-	<HighlightBlocks />
-	<CTA />
+	<VideoSection />
+	<MissionVisionGallery />
+	<Speakers />
+	<ProgramPricing />
+	<Organizaciones />
+	<DiscoverFooter />
 </Layout>

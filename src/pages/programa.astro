@@ -1,0 +1,274 @@
+---
+import Layout from '../layouts/Layout.astro'
+
+const SEO = {
+	title: 'Programa | CAEP CUSCO 2026',
+	description: 'Cronograma oficial del Congreso Académico Estudiantil de Psicología CAEP Cusco 2026. Del 14 al 18 de septiembre, 2026.'
+}
+
+const days = [
+	{
+		label: 'Día 1',
+		date: 'Lun 14 Set',
+		shortDate: '14 Set',
+		color: 'purple',
+		accent: '#4a148c',
+		bg: 'from-[#4a148c] to-[#6a1b9a]',
+		badge: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-200',
+		border: 'border-purple-300 dark:border-purple-700',
+		events: [
+			{ time: 'Todo el día', title: 'Inscripciones y entrega de material', type: 'special' },
+			{ time: '14:00 pm', title: 'Inauguración oficial', type: 'special' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 1', type: 'ponencia' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 2', type: 'ponencia' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 3', type: 'ponencia' },
+			{ time: '21:00', title: 'Fiesta de Bienvenida 🎉', type: 'social' },
+		]
+	},
+	{
+		label: 'Día 2',
+		date: 'Mar 15 Set',
+		shortDate: '15 Set',
+		color: 'pink',
+		accent: '#d81b60',
+		bg: 'from-[#d81b60] to-[#c2185b]',
+		badge: 'bg-pink-100 text-pink-800 dark:bg-pink-900/40 dark:text-pink-200',
+		border: 'border-pink-300 dark:border-pink-700',
+		events: [
+			{ time: '10:30 – 11:30', title: 'Ponencia Estudiantil 4', type: 'estudiantil' },
+			{ time: '12:00 – 13:00', title: 'Ponencia 5', type: 'ponencia' },
+			{ time: '13:00', title: 'Receso', type: 'receso' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 6', type: 'ponencia' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 7', type: 'ponencia' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 8', type: 'ponencia' },
+			{ time: '21:00', title: 'Noche Cultural 🎭', type: 'social' },
+		]
+	},
+	{
+		label: 'Día 3',
+		date: 'Mié 16 Set',
+		shortDate: '16 Set',
+		color: 'indigo',
+		accent: '#283593',
+		bg: 'from-[#283593] to-[#3949ab]',
+		badge: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-200',
+		border: 'border-indigo-300 dark:border-indigo-700',
+		events: [
+			{ time: '10:30 – 11:30', title: 'Ponencia Estudiantil 9', type: 'estudiantil' },
+			{ time: '12:00 – 13:00', title: 'Ponencia 10', type: 'ponencia' },
+			{ time: '13:00', title: 'Receso', type: 'receso' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 11', type: 'ponencia' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 12', type: 'ponencia' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 13', type: 'ponencia' },
+			{ time: '21:00', title: 'Noche Libre 🌙', type: 'social' },
+		]
+	},
+	{
+		label: 'Día 4',
+		date: 'Jue 17 Set',
+		shortDate: '17 Set',
+		color: 'teal',
+		accent: '#00695c',
+		bg: 'from-[#00695c] to-[#00897b]',
+		badge: 'bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-200',
+		border: 'border-teal-300 dark:border-teal-700',
+		events: [
+			{ time: '10:30 – 11:30', title: 'Ponencia Estudiantil 14', type: 'estudiantil' },
+			{ time: '12:00 – 13:00', title: 'Ponencia 15', type: 'ponencia' },
+			{ time: '13:00', title: 'Receso', type: 'receso' },
+			{ time: '15:00 – 16:00', title: 'Ponencia 16', type: 'ponencia' },
+			{ time: '16:30 – 17:30', title: 'Ponencia 17', type: 'ponencia' },
+			{ time: '18:00 – 19:00', title: 'Ponencia 18', type: 'ponencia' },
+			{ time: '21:00', title: 'Fiesta de Clausura 🏆', type: 'social' },
+		]
+	},
+	{
+		label: 'Día 5',
+		date: 'Vie 18 Set',
+		shortDate: '18 Set',
+		color: 'amber',
+		accent: '#e65100',
+		bg: 'from-[#e65100] to-[#f4511e]',
+		badge: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200',
+		border: 'border-amber-300 dark:border-amber-700',
+		events: [
+			{ time: 'Todo el día', title: 'Reto CAEP – Día Deportivo (Opcional) 🏃', type: 'special' },
+		]
+	},
+]
+
+const typeStyles: Record<string, { icon: string; pill: string }> = {
+	ponencia:    { icon: '🎤', pill: 'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-200 dark:border-purple-700' },
+	estudiantil: { icon: '🎓', pill: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-700' },
+	receso:      { icon: '☕', pill: 'bg-gray-50 text-gray-600 dark:bg-gray-800/40 dark:text-gray-400 border border-gray-200 dark:border-gray-700' },
+	social:      { icon: '✨', pill: 'bg-pink-50 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300 border border-pink-200 dark:border-pink-700' },
+	special:     { icon: '⭐', pill: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-700' },
+}
+---
+
+<Layout title={SEO.title} description={SEO.description}>
+
+	<!-- Page Hero -->
+	<section class="relative flex min-h-[40vh] items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a0b2e] via-[#3b1778] to-[#1a0b2e] pb-20 pt-32">
+		<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 50px 50px;"></div>
+		<div class="pointer-events-none absolute -left-20 top-10 h-72 w-72 rounded-full bg-purple-500/20 blur-3xl"></div>
+		<div class="pointer-events-none absolute -right-20 bottom-10 h-72 w-72 rounded-full bg-yellow-400/10 blur-3xl"></div>
+
+		<div class="container relative z-10 mx-auto px-4 text-center">
+			<span class="mb-4 inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1 text-sm font-semibold uppercase tracking-widest text-white/80 backdrop-blur-sm">
+				14 – 18 de Septiembre · Cusco, Perú
+			</span>
+			<h1 class="mt-4 text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">
+				Programa <span class="bg-gradient-to-r from-[#fbc02d] via-yellow-200 to-[#fbc02d] bg-clip-text text-transparent">Oficial</span>
+			</h1>
+			<p class="mx-auto mt-5 max-w-xl text-lg font-light text-white/70">
+				5 días de ponencias magistrales, talleres, networking y experiencias únicas en la ciudad imperial.
+			</p>
+
+			<!-- Stats bar -->
+			<div class="mx-auto mt-10 flex max-w-2xl flex-wrap items-center justify-center gap-6">
+				{[
+					{ label: 'Días', value: '5' },
+					{ label: 'Ponencias', value: '18+' },
+					{ label: 'Ponencias Estudiantiles', value: '3' },
+					{ label: 'Eventos Sociales', value: '4' },
+				].map(stat => (
+					<div class="flex flex-col items-center rounded-2xl border border-white/10 bg-white/5 px-6 py-3 backdrop-blur-sm">
+						<span class="text-2xl font-extrabold text-[#fbc02d]">{stat.value}</span>
+						<span class="text-xs font-medium text-white/60">{stat.label}</span>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- Legend -->
+	<div class="border-b border-gray-100 bg-white dark:border-white/10 dark:bg-[#190d27]">
+		<div class="container mx-auto flex flex-wrap items-center justify-center gap-4 px-4 py-4">
+			{Object.entries(typeStyles).map(([key, val]) => (
+				<span class={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${val.pill}`}>
+					{val.icon} {key.charAt(0).toUpperCase() + key.slice(1)}
+				</span>
+			))}
+		</div>
+	</div>
+
+	<!-- Schedule Tabs -->
+	<section class="bg-gray-50 py-16 dark:bg-[#140a22]">
+		<div class="container mx-auto max-w-5xl px-4">
+
+			<!-- Tab buttons -->
+			<div class="mb-10 flex flex-wrap items-center justify-center gap-3" id="tab-buttons">
+				{days.map((day, i) => (
+					<button
+						data-tab={i}
+						class={`tab-btn flex flex-col items-center rounded-2xl border-2 px-5 py-3 text-sm font-bold shadow-sm transition-all duration-300 ${i === 0 ? `border-[#4a148c] bg-[#4a148c] text-white shadow-[0_0_16px_rgba(74,20,140,0.3)]` : 'border-gray-200 bg-white text-gray-500 hover:border-[#4a148c]/40 dark:border-white/10 dark:bg-white/5 dark:text-gray-400'}`}
+					>
+						<span class="text-xs font-semibold opacity-75">{day.label}</span>
+						<span>{day.shortDate}</span>
+					</button>
+				))}
+			</div>
+
+			<!-- Tab panels -->
+			{days.map((day, i) => (
+				<div data-panel={i} class={`tab-panel ${i !== 0 ? 'hidden' : ''}`}>
+					<!-- Day header -->
+					<div class={`mb-6 flex items-center gap-4 rounded-2xl bg-gradient-to-r ${day.bg} p-5 text-white shadow-xl`}>
+						<div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-white/20 text-2xl font-extrabold backdrop-blur-sm">
+							{i + 1}
+						</div>
+						<div>
+							<p class="text-xs font-semibold uppercase tracking-widest text-white/75">CAEP Cusco 2026</p>
+							<h2 class="text-xl font-extrabold text-white">{day.label} — {day.date}</h2>
+						</div>
+					</div>
+
+					<!-- Events list -->
+					<div class="space-y-3">
+						{day.events.map(event => {
+							const style = typeStyles[event.type]
+							return (
+								<div class="group flex items-start gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-white/5">
+									<div class="flex-shrink-0 pt-0.5 text-xl">{style.icon}</div>
+									<div class="min-w-0 flex-1">
+										<p class="text-base font-semibold text-gray-900 dark:text-white">{event.title}</p>
+										<p class="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{event.time}</p>
+									</div>
+									<span class={`hidden flex-shrink-0 rounded-full px-3 py-1 text-xs font-semibold sm:inline-flex ${style.pill}`}>
+										{event.type}
+									</span>
+								</div>
+							)
+						})}
+					</div>
+				</div>
+			))}
+
+		</div>
+	</section>
+
+	<!-- CTA Section -->
+	<section class="border-t border-gray-100 bg-white py-16 dark:border-white/10 dark:bg-[#190d27]">
+		<div class="container mx-auto max-w-2xl px-4 text-center">
+			<h2 class="text-2xl font-extrabold text-[#4a148c] dark:text-white md:text-3xl">
+				¿Listo para ser parte del CAEP 2026?
+			</h2>
+			<p class="mx-auto mt-4 max-w-md text-gray-500 dark:text-gray-400">
+				Asegura tu lugar antes de que se agoten los cupos. Las inscripciones están abiertas.
+			</p>
+			<div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+				<a
+					href="https://app.caepperu.com/register"
+					target="_blank"
+					class="group inline-flex items-center gap-2 rounded-full border border-red-500/90 bg-red-600/80 px-8 py-3 font-semibold tracking-wide text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-red-600 hover:shadow-red-500/40"
+				>
+					<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+					</svg>
+					Inscríbete ahora
+				</a>
+				<a
+					href="https://api.whatsapp.com/send?phone=+51936202205&text=Hola%20CAEP%20quiero%20inscribirme%20en%20el%20congreso"
+					target="_blank"
+					class="inline-flex items-center gap-2 rounded-full border border-green-500/80 bg-green-600/70 px-8 py-3 font-semibold tracking-wide text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-green-600 hover:shadow-green-500/40"
+				>
+					<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+						<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+					</svg>
+					Informes WhatsApp
+				</a>
+			</div>
+		</div>
+	</section>
+
+</Layout>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const buttons = document.querySelectorAll<HTMLButtonElement>('.tab-btn')
+		const panels = document.querySelectorAll<HTMLElement>('.tab-panel')
+
+		buttons.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const idx = btn.dataset.tab!
+
+				// Reset all buttons
+				buttons.forEach(b => {
+					b.className = b.className
+						.replace('border-[#4a148c] bg-[#4a148c] text-white shadow-[0_0_16px_rgba(74,20,140,0.3)]', '')
+					b.classList.add('border-gray-200', 'bg-white', 'text-gray-500', 'hover:border-[#4a148c]/40', 'dark:border-white/10', 'dark:bg-white/5', 'dark:text-gray-400')
+				})
+
+				// Activate clicked button
+				btn.classList.remove('border-gray-200', 'bg-white', 'text-gray-500', 'hover:border-[#4a148c]/40', 'dark:border-white/10', 'dark:bg-white/5', 'dark:text-gray-400')
+				btn.classList.add('border-[#4a148c]', 'bg-[#4a148c]', 'text-white', 'shadow-[0_0_16px_rgba(74,20,140,0.3)]')
+
+				// Show/hide panels
+				panels.forEach(p => {
+					p.dataset.panel === idx ? p.classList.remove('hidden') : p.classList.add('hidden')
+				})
+			})
+		})
+	})
+</script>

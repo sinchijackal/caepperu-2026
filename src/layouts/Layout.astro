@@ -35,6 +35,7 @@ const { title, description, ogImage, noindex, classes } = Astro.props
 	<Header title={title} description={description} ogImage={ogImage} noindex={noindex} />
 	<body
 		class:list={[
+			'overflow-x-hidden',
 			{ ['mode-' + `${configData.mode}`]: configData.mode },
 			{ ['scroll-animation']: configData.scrollAnimations },
 			{ [`${classes}`]: classes }

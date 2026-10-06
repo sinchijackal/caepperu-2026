@@ -1,0 +1,460 @@
+---
+// src/components/caep/Speakers.astro
+---
+<section id="ponentes" class="py-20 bg-slate-50 dark:bg-[#150a21] relative [content-visibility:auto] contain-intrinsic-size-1000">
+  <!-- Subtle background waves via CSS or SVG -->
+  <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-64 overflow-hidden opacity-30 dark:opacity-15 pointer-events-none">
+    <svg viewBox="0 0 1440 320" class="w-full h-full object-cover">
+      <path class="fill-[#e9d5ff] dark:fill-[#e9d5ff]" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  </div>
+
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="flex items-center justify-center mb-16 mx-auto">
+      <div class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-transparent via-purple-200 to-purple-400"></div>
+      <h2 class="text-3xl font-bold text-center text-[#4a148c] dark:text-white px-6 leading-none">Conoce a nuestros ponentes</h2>
+      <div class="h-1 flex-grow -translate-y-1 rounded-full bg-gradient-to-r from-purple-400 via-purple-200 to-transparent"></div>
+    </div>
+
+    <div id="speakers-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mx-auto min-h-[250px]">
+      <!-- Loading state / Spinner -->
+      <div id="speakers-loading" class="col-span-full py-16 flex flex-col items-center justify-center space-y-4">
+        <div class="w-10 h-10 border-4 border-purple-500/20 border-t-purple-600 rounded-full animate-spin"></div>
+        <p class="text-sm text-slate-400 dark:text-purple-300/40 animate-pulse font-semibold">Cargando ponentes...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modern Glassmorphic Speaker Modal -->
+<div 
+  id="speaker-modal" 
+  class="fixed inset-0 z-[20] flex items-start justify-center p-4 bg-slate-950/70 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+>
+  <!-- Modal Container -->
+  <div 
+    id="speaker-modal-content" 
+    class="relative w-full max-w-2xl bg-white dark:bg-[#1f1137] rounded-3xl overflow-hidden shadow-2xl border border-purple-500/20 transform scale-95 transition-all duration-300 my-auto"
+  >
+    <!-- Close Button -->
+    <button 
+      id="close-modal-btn" 
+      class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-slate-950/50 hover:bg-[#d32f2f] text-white transition-colors duration-200" 
+      aria-label="Cerrar modal"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <div class="grid grid-cols-1 md:grid-cols-5 min-h-[380px]">
+      <!-- Speaker Image Column -->
+      <div id="speaker-modal-image-col" class="md:col-span-2 relative aspect-[4/5] md:aspect-auto bg-slate-100 dark:bg-slate-800">
+        <img id="speaker-modal-image" src="" alt="" class="w-full h-full object-cover" />
+      </div>
+
+      <!-- Speaker Details Column -->
+      <div class="md:col-span-3 p-6 md:p-8 flex flex-col justify-center text-left bg-white dark:bg-[#1f1137]">
+        <span id="speaker-modal-role" class="inline-block text-[#fbc02d] text-xs font-extrabold uppercase tracking-wider mb-2"></span>
+        <h3 id="speaker-modal-name" class="text-2xl md:text-3xl font-black text-[#4a148c] dark:text-white mb-4 leading-tight"></h3>
+        
+        <div class="h-0.5 bg-gradient-to-r from-purple-500/50 to-transparent mb-6"></div>
+        
+        <!-- Loader -->
+        <div id="speaker-modal-loader" class="flex flex-col items-center justify-center py-8 space-y-3">
+          <div class="w-8 h-8 border-4 border-purple-500/20 border-t-purple-600 rounded-full animate-spin"></div>
+          <p class="text-xs text-slate-400 dark:text-purple-300/40 animate-pulse font-semibold">Cargando información...</p>
+        </div>
+
+        <!-- Loaded Content Wrapper -->
+        <div id="speaker-modal-loaded-content" class="hidden transition-opacity duration-300 space-y-6">
+          <div>
+            <p class="text-slate-400 dark:text-purple-300/60 text-xs font-semibold uppercase tracking-wider mb-2">Perfil Académico / Profesional</p>
+            <!-- Scrollable biography text area -->
+            <div class="max-h-48 overflow-y-auto pr-2 scrollbar-thin">
+              <p id="speaker-modal-quote" class="text-slate-700 dark:text-purple-100/90 text-sm leading-relaxed whitespace-pre-line"></p>
+            </div>
+          </div>
+
+          <!-- Talks / Ponencias Section -->
+          <div id="speaker-modal-talks-container" class="hidden">
+            <div class="h-px bg-gradient-to-r from-purple-500/20 to-transparent my-4"></div>
+            <p class="text-slate-400 dark:text-purple-300/60 text-xs font-semibold uppercase tracking-wider mb-3">Ponencias / Presentaciones</p>
+            <div id="speaker-modal-talks-list" class="space-y-3 max-h-48 overflow-y-auto pr-2 scrollbar-thin">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Premium vector profile avatar placeholder served as a public asset file
+  const DEFAULT_AVATAR = '/images/placeholder-user.svg';
+  const SPACER_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+  function setupSpeakersModal() {
+    // Reset body scroll lock in case of page transition
+    document.body.style.overflow = '';
+
+    const grid = document.getElementById('speakers-grid');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const modal = document.getElementById('speaker-modal');
+    let activeFetchAbortController: AbortController | null = null;
+
+    if (!grid) return;
+
+    // Load speakers dynamically from the API client-side
+    const listUrl = `${import.meta.env.PUBLIC_API_URL}/speakers/list`;
+    console.log('[SpeakersModal] Fetching speakers list from:', listUrl);
+
+    fetch(listUrl)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(apiSpeakers => {
+        if (!apiSpeakers || !Array.isArray(apiSpeakers) || apiSpeakers.length === 0) {
+          showEmptyState();
+          return;
+        }
+
+        // Map raw database speakers to template format
+        const speakers = apiSpeakers.map((s: any) => {
+          const degreePrefix = s.degree ? `${s.degree}. ` : '';
+          const fullName = `${s.name} ${s.p_surname || ''} ${s.m_surname || ''}`.trim().replace(/\s+/g, ' ');
+          const role = s.type === 'professional' ? 'Ponente Profesional' : 'Ponente Estudiantil';
+          
+          let photoUrl = DEFAULT_AVATAR;
+          if (s.photo) {
+            if (s.photo.startsWith('http://') || s.photo.startsWith('https://')) {
+              photoUrl = s.photo;
+            } else if (s.photo.includes('images/speakers')) {
+              photoUrl = `${import.meta.env.PUBLIC_API_URL}${s.photo.startsWith('/') ? '' : '/'}${s.photo}`;
+            } else {
+              photoUrl = `${import.meta.env.PUBLIC_API_URL}/images/speakers${s.photo.startsWith('/') ? '' : '/'}${s.photo}`;
+            }
+          }
+
+          return {
+            id: String(s.id),
+            name: `${degreePrefix}${fullName}`,
+            role: role,
+            image: photoUrl
+          };
+        });
+
+        renderSpeakers(speakers);
+      })
+      .catch(err => {
+        console.error('[SpeakersModal] Error loading speakers list:', err);
+        showErrorState();
+      });
+
+    function renderSpeakers(speakersList: any[]) {
+      if (!grid) return;
+      
+      const cardsHtml = speakersList.map(speaker => `
+        <button 
+          class="group text-left relative rounded-2xl overflow-hidden shadow-xl transition-transform hover:-translate-y-2 will-change-transform cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-400 w-full opacity-0 translate-y-4 transition-all duration-500"
+          data-speaker-btn
+          data-id="${speaker.id}"
+          data-name="${speaker.name}"
+          data-role="${speaker.role}"
+          data-image="${speaker.image}"
+        >
+          <div class="aspect-[4/5] bg-slate-100 dark:bg-slate-800 w-full">
+            <img src="${speaker.image}" alt="${speaker.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-speaker-image />
+          </div>
+          <!-- Gradient Overlay at the bottom -->
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#1d0b3c]/95 via-[#2c1065]/70 to-transparent pb-3 sm:pb-4 pt-10 sm:pt-12 px-2 sm:px-3 text-center">
+            <h3 class="text-amber-400 dark:text-[#fbc02d] font-extrabold text-base md:text-lg mb-2 sm:mb-2.5 leading-tight">${speaker.name}</h3>
+            <span class="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-white bg-pink-500/40 border border-pink-300/50 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 backdrop-blur-sm transition-all duration-300 group-hover:bg-pink-500 group-hover:text-white group-hover:border-transparent group-hover:scale-105">
+              Ver detalle
+              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
+        </button>
+      `).join('');
+
+      grid.innerHTML = cardsHtml;
+
+      // Setup click event listeners on newly created cards
+      const cards = grid.querySelectorAll('[data-speaker-btn]');
+      cards.forEach((card, idx) => {
+        const buttonEl = card as HTMLButtonElement;
+        
+        buttonEl.addEventListener('click', () => {
+          const dataset = buttonEl.dataset;
+          const cardImg = buttonEl.querySelector('[data-speaker-image]') as HTMLImageElement;
+          const currentImageSrc = cardImg ? cardImg.src : (dataset.image || '');
+
+          openModal({
+            id: dataset.id || '',
+            name: dataset.name || '',
+            role: dataset.role || '',
+            image: currentImageSrc
+          });
+        });
+
+        // Image error handling for dynamically loaded cards
+        const cardImg = buttonEl.querySelector('[data-speaker-image]') as HTMLImageElement;
+        if (cardImg) {
+          cardImg.addEventListener('error', () => {
+            cardImg.src = DEFAULT_AVATAR;
+          });
+        }
+
+        // Staggered entry animation
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            buttonEl.classList.remove('opacity-0', 'translate-y-4');
+          }, idx * 60);
+        });
+      });
+    }
+
+    function showEmptyState() {
+      if (!grid) return;
+      grid.innerHTML = `
+        <div class="col-span-full py-16 text-center">
+          <p class="text-slate-400 dark:text-purple-300/60 text-sm font-medium">No hay ponentes registrados en este momento.</p>
+        </div>
+      `;
+    }
+
+    function showErrorState() {
+      if (!grid) return;
+      grid.innerHTML = `
+        <div class="col-span-full py-16 text-center">
+          <p class="text-red-500/70 dark:text-red-400/70 text-sm font-semibold mb-2">Error al cargar la lista de ponentes.</p>
+          <button id="retry-speakers-btn" class="px-4 py-2 bg-[#4a148c] text-white rounded-xl text-xs font-bold transition-all hover:bg-purple-700 active:scale-95">Reintentar</button>
+        </div>
+      `;
+      const retryBtn = document.getElementById('retry-speakers-btn');
+      retryBtn?.addEventListener('click', () => {
+        grid.innerHTML = `
+          <div id="speakers-loading" class="col-span-full py-16 flex flex-col items-center justify-center space-y-4">
+            <div class="w-10 h-10 border-4 border-purple-500/20 border-t-purple-600 rounded-full animate-spin"></div>
+            <p class="text-sm text-slate-400 dark:text-purple-300/40 animate-pulse font-semibold">Cargando ponentes...</p>
+          </div>
+        `;
+        setupSpeakersModal(); // Re-trigger setup
+      });
+    }
+
+    function openModal(data: { id: string; name: string; role: string; image: string }) {
+      const modal = document.getElementById('speaker-modal');
+      const modalContent = document.getElementById('speaker-modal-content');
+      const modalImg = document.getElementById('speaker-modal-image') as HTMLImageElement;
+      const modalName = document.getElementById('speaker-modal-name');
+      const modalRole = document.getElementById('speaker-modal-role');
+      const modalQuote = document.getElementById('speaker-modal-quote');
+      const imageCol = document.getElementById('speaker-modal-image-col');
+      const loader = document.getElementById('speaker-modal-loader');
+      const loadedContent = document.getElementById('speaker-modal-loaded-content');
+      const talksContainer = document.getElementById('speaker-modal-talks-container');
+      const talksList = document.getElementById('speaker-modal-talks-list');
+      
+      if (!modal || !modalContent || !modalImg || !modalName || !modalRole || !modalQuote || !loader || !loadedContent || !talksContainer || !talksList) {
+        console.error('[SpeakersModal] DOM elements not found when opening modal!');
+        return;
+      }
+
+      console.log('[SpeakersModal] openModal called with:', { ...data });
+      
+      // Abort any pending fetch from previous clicks
+      if (activeFetchAbortController) {
+        activeFetchAbortController.abort();
+      }
+      activeFetchAbortController = new AbortController();
+      
+      // Prevent triggering onerror from clearing src by setting it to null first, then using spacer GIF
+      modalImg.onerror = null;
+      modalImg.src = SPACER_GIF;
+      
+      // In case the modal image fails to load, fallback to default avatar
+      modalImg.onerror = (e) => {
+        console.warn('[SpeakersModal] Modal image failed to load, falling back to placeholder. Image URL:', data.image, e);
+        modalImg.onerror = null;
+        modalImg.src = DEFAULT_AVATAR;
+        imageCol?.classList.add('is-placeholder');
+      };
+      
+      const currentUrl = window.location.href;
+      if (!data.image || data.image === currentUrl || data.image.includes('undefined') || data.image.includes('null') || data.image.includes(DEFAULT_AVATAR)) {
+        console.log('[SpeakersModal] Loading default placeholder avatar');
+        modalImg.src = DEFAULT_AVATAR;
+        imageCol?.classList.add('is-placeholder');
+      } else {
+        console.log('[SpeakersModal] Loading speaker photo:', data.image);
+        imageCol?.classList.remove('is-placeholder');
+        modalImg.src = data.image;
+      }
+      
+      modalImg.alt = data.name;
+      modalName.textContent = data.name;
+      modalRole.textContent = data.role;
+
+      // Show loader, hide loaded content
+      loader.classList.remove('hidden');
+      loadedContent.classList.add('hidden');
+      loadedContent.classList.remove('opacity-100');
+      loadedContent.classList.add('opacity-0');
+      talksContainer.classList.add('hidden');
+      talksList.innerHTML = '';
+      modalQuote.textContent = '';
+
+      // Open modal container immediately for instant UI response
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modalContent.classList.remove('scale-95');
+      modalContent.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+
+      // Start fetching details dynamically
+      const apiUrl = `${import.meta.env.PUBLIC_API_URL}/speaker/${data.id}/info`;
+      console.log('[SpeakersModal] Fetching speaker details from:', apiUrl);
+
+      fetch(apiUrl, { signal: activeFetchAbortController.signal })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then(fetchedData => {
+          if (!fetchedData) {
+            throw new Error('No data received from API');
+          }
+          console.log('[SpeakersModal] Loaded speaker details:', fetchedData);
+          
+          // Populate profile biography
+          modalQuote.textContent = fetchedData.profile || 'No hay perfil académico o profesional disponible.';
+          
+          // Handle talks/ponencias
+          let talks = [];
+          if (fetchedData.talks) {
+            try {
+              talks = typeof fetchedData.talks === 'string' ? JSON.parse(fetchedData.talks) : fetchedData.talks;
+            } catch (e) {
+              console.error('[SpeakersModal] Error parsing talks list:', e, fetchedData.talks);
+            }
+          }
+
+          // Filter out empty items
+          const validTalks = Array.isArray(talks) 
+            ? talks.filter((t: any) => t && typeof t === 'object' && t.keynote) 
+            : [];
+
+          if (validTalks.length > 0) {
+            talksList.innerHTML = validTalks.map((talk: any) => `
+              <div class="p-3 bg-purple-500/10 dark:bg-purple-950/30 border border-purple-500/10 rounded-2xl flex flex-col justify-center">
+                <h4 class="text-xs font-bold text-[#4a148c] dark:text-purple-200 mb-1 leading-snug">${talk.keynote}</h4>
+                <div class="flex items-center gap-1.5 text-[10px] text-slate-500 dark:text-purple-300/60 font-medium">
+                  <svg class="w-3.5 h-3.5 text-purple-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>${talk.t_date || ''} &bull; ${talk.t_from || ''} - ${talk.t_to || ''}</span>
+                </div>
+              </div>
+            `).join('');
+            talksContainer.classList.remove('hidden');
+          } else {
+            talksContainer.classList.add('hidden');
+          }
+
+          // Show loaded content
+          loader.classList.add('hidden');
+          loadedContent.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            loadedContent.classList.remove('opacity-0');
+            loadedContent.classList.add('opacity-100');
+          });
+        })
+        .catch(err => {
+          if (err.name === 'AbortError') {
+            console.log('[SpeakersModal] Fetch aborted');
+            return;
+          }
+          console.error('[SpeakersModal] Error fetching details:', err);
+          modalQuote.textContent = 'Ocurrió un error al cargar la información académica del ponente. Por favor, cierre el modal e intente nuevamente.';
+          talksContainer.classList.add('hidden');
+          loader.classList.add('hidden');
+          loadedContent.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            loadedContent.classList.remove('opacity-0');
+            loadedContent.classList.add('opacity-100');
+          });
+        });
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('speaker-modal');
+      const modalContent = document.getElementById('speaker-modal-content');
+      const imageCol = document.getElementById('speaker-modal-image-col');
+      
+      console.log('[SpeakersModal] Closing modal');
+      if (activeFetchAbortController) {
+        activeFetchAbortController.abort();
+      }
+      if (modal && modalContent) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+      }
+      document.body.style.overflow = '';
+      imageCol?.classList.remove('is-placeholder');
+    }
+
+    closeBtn?.addEventListener('click', closeModal);
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('opacity-0')) {
+        closeModal();
+      }
+    });
+  }
+
+  // Inicializar en carga inicial y cambios de página (Astro View Transitions / ClientRouter)
+  setupSpeakersModal();
+  document.addEventListener('astro:page-load', setupSpeakersModal);
+</script>
+
+<style>
+  /* Custom thin scrollbar for bio text */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 5px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #d8c5ff;
+    border-radius: 99px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #c0a9ff;
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #d8c5ff transparent;
+  }
+
+  #speaker-modal-image-col.is-placeholder .modal-overlay {
+    display: none !important;
+  }
+</style>

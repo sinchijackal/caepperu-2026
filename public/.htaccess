@@ -1,0 +1,10 @@
+# Página de error personalizada
+ErrorDocument 404 /404.html
+
+# Redirigir rutas limpias (sin extensión) a su archivo HTML correspondiente
+Options -MultiViews
+
+# Forzar HTTPS (opcional, descomenta si tienes SSL)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

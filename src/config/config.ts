@@ -18,19 +18,21 @@ export interface Config {
 	noindex: boolean
 	mode: Mode
 	scrollAnimations: boolean
+	appUrl: string
 }
 
 export const configData: Config = {
-	siteTitle: 'Foxi. Tailwind CSS Astro Starter Kit by Oxygenna',
+	siteTitle: 'Congreso Anual de Estudiantes de Psicología Cusco 2026',
 	siteDescription:
-		'Foxi is a design and development agency that specializes in creating beautiful and functional websites.',
+		'El Congreso Anual de Estudiantes de Psicología (CAEP) es un evento que reúne a estudiantes de psicología de todo el Perú para compartir conocimientos, experiencias y perspectivas sobre la psicología.',
 	ogImage: '/og.jpg',
 	logo: {
 		src: '/logo.svg',
-		alt: 'Foxi. logo'
+		alt: 'CAEPPERU Cusco 2026'
 	},
 	canonical: true,
 	noindex: false,
 	mode: 'auto',
-	scrollAnimations: true
+	scrollAnimations: true,
+	appUrl: import.meta.env.PUBLIC_API_URL || 'http://app.caepperu.test'
 }

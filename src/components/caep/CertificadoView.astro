@@ -1,0 +1,282 @@
+---
+import Section from '../ui/Section.astro'
+import Row from '../ui/Row.astro'
+import Col from '../ui/Col.astro'
+
+const header = {
+	title: 'Verifica tu<br/><strong>Certificado</strong>',
+	text: 'Ingresa el código único que se encuentra en la parte inferior de tu documento para validar tu participación oficial en el congreso.'
+}
+---
+
+<Section id="verify" classes="bg-neutral-50 dark:bg-neutral-950/80 min-h-[85vh] flex items-center relative overflow-hidden">
+	<!-- Patrón de puntos decorativo en el fondo -->
+	<div
+		class="absolute inset-0 z-0 opacity-40 dark:opacity-20 pointer-events-none"
+		style="background-image: radial-gradient(#8b5cf6 1px, transparent 1px); background-size: 32px 32px;"
+	>
+	</div>
+
+	<!-- Gradient orb for extra "life" -->
+	<div class="absolute left-[-10%] top-[-10%] w-[40%] h-[40%] rounded-full bg-purple-500/20 blur-[100px] pointer-events-none"></div>
+
+	<Row classes="relative z-10 w-full items-center">
+		<Col span="5" classes="self-center mb-16 lg:mb-0">
+			<header class="max-w-xl pr-0 lg:pr-8">
+				<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 font-bold text-xs uppercase tracking-widest mb-8 shadow-sm">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+					Validación Oficial
+				</div>
+				<h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight" set:html={header.title} />
+				<p class="text-lg leading-relaxed text-gray-600 dark:text-gray-300 mb-10 font-medium">{header.text}</p>
+				
+				<div class="flex items-center gap-5 p-5 rounded-2xl bg-white/50 dark:bg-black/20 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 shadow-sm">
+					<div class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+					</div>
+					<p class="text-sm font-semibold text-gray-700 dark:text-gray-200 leading-snug">Sistema protegido y respaldado<br/><span class="text-gray-500 dark:text-gray-400 font-normal">por la organización CAEP.</span></p>
+				</div>
+			</header>
+		</Col>
+
+		<Col span="7" classes="relative">
+			<!-- Glow detrás de la tarjeta -->
+			<div class="absolute inset-0 bg-[#eb3349]/20 blur-[60px] rounded-full transform scale-90 translate-y-4"></div>
+
+			<!-- Tarjeta Roja del Certificado -->
+			<div class="relative overflow-hidden rounded-[2rem] bg-[#eb3349] shadow-[0_20px_60px_rgba(235,51,73,0.25)] transition-transform duration-500 hover:-translate-y-2 border border-white/10">
+				<!-- Formas geométricas de fondo (efecto diagonal) -->
+				<div class="pointer-events-none absolute left-0 top-0 h-full w-full overflow-hidden">
+					<div class="absolute bottom-0 left-0 h-[60%] w-full bg-gradient-to-t from-black/15 to-transparent" style="clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);"></div>
+					<div class="absolute left-0 top-0 h-[50%] w-full bg-gradient-to-b from-white/15 to-transparent" style="clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);"></div>
+				</div>
+
+				<div class="relative px-6 py-20 text-center md:px-12 md:py-28">
+					<h2 class="mb-4 text-3xl font-black tracking-tight text-white md:text-5xl drop-shadow-sm">
+						Ingrese el código
+					</h2>
+					<p class="mb-2 text-lg font-semibold text-white/95">
+						Ingrese tal cual aparece en el certificado.
+					</p>
+					<p class="mb-10 text-sm font-medium text-white/75 tracking-wide">
+						(Ejm: AAAAA-BBBBB-CCCCC)
+					</p>
+
+					<!-- Formulario -->
+					<form id="verify-form" class="mx-auto flex flex-col justify-center gap-3 sm:flex-row w-full max-w-lg">
+						<input
+							id="codigo-input"
+							name="code"
+							type="text"
+							placeholder="INGRESE EL CÓDIGO"
+							class="flex-1 rounded-xl bg-white/95 px-6 py-4 font-bold uppercase tracking-widest text-gray-800 shadow-inner placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-white/40 transition-all"
+							required
+						/>
+						<button
+							id="verify-btn"
+							type="submit"
+							class="rounded-xl bg-black px-10 py-4 font-black uppercase tracking-widest text-white shadow-xl transition-all hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-black/50 hover:shadow-black/20 hover:-translate-y-0.5"
+						>
+							Verificar
+						</button>
+					</form>
+
+					<!-- Estados -->
+					<div id="loading-container" class="hidden mt-8 text-white">
+						<div class="flex flex-col items-center justify-center animate-pulse">
+							<svg class="animate-spin h-8 w-8 mb-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+							</svg>
+							<span class="font-bold tracking-widest uppercase">Verificando código...</span>
+						</div>
+					</div>
+
+					<div id="error-container" class="hidden mt-8 text-red-100 bg-red-900/40 backdrop-blur-sm border border-red-500/30 rounded-2xl p-6 mx-auto max-w-lg animate-fade-in">
+						<svg class="w-10 h-10 mx-auto mb-2 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+						<div id="error-message" class="font-bold">No se pudo verificar el código.</div>
+					</div>
+
+					<div id="result-container" class="hidden mt-10 text-white flex flex-col items-center justify-center animate-fade-in mx-auto max-w-2xl">
+						<svg class="w-16 h-16 mx-auto mb-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+							<path d="M7 15h4M7 9h10M7 12h10"></path>
+							<circle cx="17" cy="15" r="2"></circle>
+							<path d="M17 17v4l-2-1-2 1v-4"></path>
+						</svg>
+						
+						<div id="result-code" class="text-xl font-bold mb-4 tracking-widest"></div>
+						
+						<div class="text-sm opacity-90 mb-1 font-medium">Nombres y apellidos:</div>
+						<div id="result-name" class="text-xl md:text-2xl font-black uppercase mb-6 text-white drop-shadow-md"></div>
+						
+						<div class="text-sm opacity-90 mb-1 font-medium">Certificado emitido:</div>
+						<div id="result-date" class="text-lg font-bold"></div>
+					</div>
+				</div>
+			</div>
+		</Col>
+	</Row>
+</Section>
+
+<script is:inline data-astro-rerun define:vars={{ apiUrl: import.meta.env.PUBLIC_API_URL }}>
+	(function() {
+		let isRunning = false;
+
+		function initCertificado() {
+			const input = document.getElementById('codigo-input');
+			const form = document.getElementById('verify-form');
+			const btn = document.getElementById('verify-btn');
+			
+			if (!form || !input) return;
+
+			const loadingContainer = document.getElementById('loading-container');
+			const errorContainer = document.getElementById('error-container');
+			const errorMessage = document.getElementById('error-message');
+			const resultContainer = document.getElementById('result-container');
+			
+			const resultCode = document.getElementById('result-code');
+			const resultName = document.getElementById('result-name');
+			const resultDate = document.getElementById('result-date');
+
+			// Leer código de la URL (?code= o ?codigo=) con fallback regex
+			let codeParam = '';
+			try {
+				const urlParams = new URLSearchParams(window.location.search);
+				codeParam = (urlParams.get('code') || urlParams.get('codigo') || '').trim().toUpperCase();
+			} catch (e) {}
+
+			if (!codeParam) {
+				const match = window.location.href.match(/[?&]cod(?:e|igo)=([^&#]*)/i);
+				if (match) {
+					codeParam = decodeURIComponent(match[1]).trim().toUpperCase();
+				}
+			}
+
+			// Llenar el input de forma garantizada (propiedad, atributo y evento)
+			if (codeParam) {
+				input.value = codeParam;
+				input.defaultValue = codeParam;
+				input.setAttribute('value', codeParam);
+				input.dispatchEvent(new Event('input', { bubbles: true }));
+				input.dispatchEvent(new Event('change', { bubbles: true }));
+			}
+
+			// Prevenir registrar múltiples listeners si el script se vuelve a ejecutar
+			if (form.dataset.ready === 'true') {
+				return;
+			}
+			form.dataset.ready = 'true';
+
+			async function consultar(rawCode) {
+				const currentCode = (rawCode || input.value || '').trim().toUpperCase();
+				if (!currentCode || isRunning) return;
+
+				// Validar formato: XXXXX-XXXXX-XXXXX
+				const codeRegex = /^[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}$/;
+				if (!codeRegex.test(currentCode)) {
+					errorContainer?.classList.remove('hidden');
+					resultContainer?.classList.add('hidden');
+					loadingContainer?.classList.add('hidden');
+					if (errorMessage) {
+						errorMessage.textContent = 'El formato del código no es válido. Debe ser como: AAAAA-BBBBB-CCCCC';
+					}
+					return;
+				}
+
+				isRunning = true;
+
+				// Estados visuales
+				errorContainer?.classList.add('hidden');
+				resultContainer?.classList.add('hidden');
+				loadingContainer?.classList.remove('hidden');
+				
+				if (btn) {
+					btn.disabled = true;
+					btn.classList.add('opacity-50', 'cursor-not-allowed');
+				}
+
+				try {
+					const response = await fetch(`${apiUrl}/api/certificate-check`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+						},
+						body: JSON.stringify({ code: currentCode })
+					});
+
+					const data = await response.json();
+					
+					if (!response.ok) {
+						let msg = data.message || 'El certificado no existe.';
+						if (data.errors && typeof data.errors === 'object') {
+							msg = Object.values(data.errors).flat().join(', ') || msg;
+						}
+						throw new Error(msg);
+					}
+
+					const cert = data.data || data;
+
+					if (!cert || (typeof cert === 'object' && Object.keys(cert).length === 0)) {
+						throw new Error(data.message || 'El certificado no existe.');
+					}
+
+					const nameParts = [cert.name, cert.p_surname, cert.m_surname].filter(Boolean);
+					const nameToDisplay = nameParts.length > 0
+						? nameParts.join(' ')
+						: cert.full_name || (cert.student && cert.student.name);
+
+					if (!nameToDisplay) {
+						throw new Error('El certificado no existe o no tiene información asociada.');
+					}
+
+					if (resultCode) resultCode.textContent = currentCode;
+					if (resultName) resultName.textContent = nameToDisplay;
+					
+					let formattedDate = cert.issued_at || cert.date || cert.created_at || 'Fecha no disponible';
+					try {
+						if (formattedDate !== 'Fecha no disponible') {
+							const d = new Date(formattedDate);
+							const options = { day: '2-digit', month: 'long', year: 'numeric' };
+							formattedDate = d.toLocaleDateString('es-PE', options);
+						}
+					} catch(e) {}
+					
+					if (resultDate) resultDate.textContent = formattedDate;
+
+					loadingContainer?.classList.add('hidden');
+					resultContainer?.classList.remove('hidden');
+					
+					// Asegurar que el input mantenga el código consultado
+					input.value = currentCode;
+					input.setAttribute('value', currentCode);
+
+				} catch (error) {
+					loadingContainer?.classList.add('hidden');
+					errorContainer?.classList.remove('hidden');
+					if (errorMessage) {
+						errorMessage.textContent = error.message || 'Ocurrió un error de conexión.';
+					}
+				} finally {
+					isRunning = false;
+					if (btn) {
+						btn.disabled = false;
+						btn.classList.remove('opacity-50', 'cursor-not-allowed');
+					}
+				}
+			}
+
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				consultar(input.value);
+			});
+		}
+
+		// Ejecutar en todos los ciclos de vida posibles
+		document.addEventListener('DOMContentLoaded', initCertificado);
+		document.addEventListener('astro:page-load', initCertificado);
+		document.addEventListener('astro:after-swap', initCertificado);
+		initCertificado();
+	})();
+</script>

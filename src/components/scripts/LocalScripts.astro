@@ -28,14 +28,79 @@
 		// Menu toggle
 		const headerToggle = document.querySelector('.header__toggle')
 		const headerMenu = document.querySelector('.header__menu')
-		if (headerToggle && headerMenu) {
+
+		const closeMenu = () => {
+			if (headerToggle && headerMenu) {
+				headerToggle.classList.remove('header__toggle--open')
+				headerToggle.setAttribute('aria-expanded', 'false')
+				headerMenu.classList.remove('header__menu--open')
+			}
+		}
+
+		if (headerToggle && headerMenu && !headerToggle.dataset.initialized) {
+			headerToggle.dataset.initialized = 'true'
 			headerToggle.addEventListener('click', () => {
+				const isOpening = !headerToggle.classList.contains('header__toggle--open')
 				headerToggle.classList.toggle('header__toggle--open')
-				const isExpanded = headerToggle.getAttribute('aria-expanded') === 'true'
-				const newExpandedValue = isExpanded ? 'false' : 'true'
-				headerToggle.setAttribute('aria-expanded', newExpandedValue)
+				headerToggle.setAttribute('aria-expanded', isOpening ? 'true' : 'false')
 				headerMenu.classList.toggle('header__menu--open')
 			})
+
+			// Al hacer clic en cualquier enlace del menú móvil, cerrar el drawer y permitir navegar/scrollear
+			const menuLinks = headerMenu.querySelectorAll('a')
+			menuLinks.forEach((link) => {
+				link.addEventListener('click', (e) => {
+					closeMenu()
+
+					const href = link.getAttribute('href')
+					if (!href) return
+
+					try {
+						const url = new URL(link.href, window.location.origin)
+						const currentPath = window.location.pathname.replace(/\/$/, '')
+						const targetPath = url.pathname.replace(/\/$/, '')
+
+						// Si es un enlace de sección en la misma página (ej: /#programa estando en /)
+						if (currentPath === targetPath && url.hash) {
+							e.preventDefault()
+							const targetId = url.hash.replace('#', '')
+							const targetElement = document.getElementById(targetId)
+
+							if (targetElement) {
+								window.history.pushState(null, '', url.hash)
+								targetElement.scrollIntoView({ behavior: 'smooth' })
+							}
+						} else if (currentPath === targetPath && (!url.hash || url.hash === '#')) {
+							// Clic en "Inicio" estando ya en "/"
+							e.preventDefault()
+							window.scrollTo({ top: 0, behavior: 'smooth' })
+						}
+					} catch (err) {}
+				})
+			})
+
+			// Cerrar el menú al redimensionar a pantallas grandes (desktop)
+			window.addEventListener('resize', () => {
+				if (window.innerWidth >= 1024) {
+					closeMenu()
+				}
+			})
+		}
+
+		// Optimized Header Scroll
+		const header = document.querySelector('.header')
+		if (header) {
+			const scrollObserver = new IntersectionObserver(
+				([entry]) => {
+					header.classList.toggle('header--scrolled', !entry.isIntersecting)
+				},
+				{ threshold: [1.0], rootMargin: '-10px 0px 0px 0px' }
+			)
+			// Observe the first element of the page to trigger header change
+			const hero = document.querySelector('section')
+			if (hero) {
+				scrollObserver.observe(hero)
+			}
 		}
 
 		// Modals
@@ -65,10 +130,12 @@
 				}
 			})
 			const close = modal.querySelector('.modal__close')
-			close.addEventListener('click', function (event) {
-				event.stopPropagation()
-				closeModal(modal)
-			})
+			if (close) {
+				close.addEventListener('click', function (event) {
+					event.stopPropagation()
+					closeModal(modal)
+				})
+			}
 		})
 	})
 </script>
@@ -110,7 +177,8 @@
 		const applyTheme = () => {
 			if (
 				localStorage.theme === 'dark' ||
-				(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				(!('theme' in localStorage) &&
+					window.matchMedia('(prefers-color-scheme: dark)').matches)
 			) {
 				document.documentElement.classList.add('dark')
 			} else {
