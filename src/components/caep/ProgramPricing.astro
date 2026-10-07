@@ -81,55 +81,88 @@ try {
 	console.error('Error al obtener los planes:', error)
 }
 
-const getPlanPrice = (planName: string, defaultPrice: string) => {
-	const plan = apiPlans.find((p: any) => p.name === planName)
-	return plan ? parseInt(plan.price).toString() : defaultPrice
-}
-
-const pricing = [
-	{
+const planStyles: Record<string, any> = {
+	'Individual': {
 		type: 'Individual',
-		apiName: 'Individual',
 		description: 'Pase general para 1 persona',
 		subDescription: '* Precio por persona',
-		price: getPlanPrice('Individual', '00.00'),
-		btnText: '¡Inscríbete ya!',
 		bgClass: 'bg-gradient-to-br from-[#4a148c] to-[#2c1065]',
 		textClass: 'text-white',
 		priceClass: 'text-white',
 		btnClass: 'bg-[#fbc02d] text-[#4a148c] hover:bg-yellow-500'
 	},
-	{
-		type: 'Grupo de 5',
-		apiName: 'Grupo de 5',
-		description: 'Ideal para grupos de amigos',
-		subDescription: '* Precio por persona',
-		price: getPlanPrice('Grupo de 5', '00.00'),
-		btnText: '¡Inscríbete ya!',
-		bgClass: 'bg-gradient-to-br from-[#fbc02d] to-[#f9a825]',
-		textClass: 'text-[#4a148c]',
-		priceClass: 'text-[#4a148c]',
-		btnClass: 'bg-[#d32f2f] text-white hover:bg-red-700'
-	},
-	{
+	'Grupo de 10': {
 		type: 'Grupo de 10+',
-		apiName: 'Grupo de 10',
 		description: 'Mejor tarifa para delegaciones',
 		subDescription: '* Precio por persona',
-		price: getPlanPrice('Grupo de 10', '00.00'),
-		btnText: '¡Inscríbete ya!',
 		bgClass: 'bg-gradient-to-br from-[#d32f2f] to-[#b71c1c]',
 		textClass: 'text-white',
 		priceClass: 'text-white',
 		btnClass: 'bg-[#fbc02d] text-[#4a148c] hover:bg-yellow-500'
+	},
+	'Grupo de 5': {
+		type: 'Grupo de 5',
+		description: 'Ideal para grupos de amigos',
+		subDescription: '* Precio por persona',
+		bgClass: 'bg-gradient-to-br from-[#fbc02d] to-[#f9a825]',
+		textClass: 'text-[#4a148c]',
+		priceClass: 'text-[#4a148c]',
+		btnClass: 'bg-[#d32f2f] text-white hover:bg-red-700'
 	}
-]
+}
+
+// Solo mostrar los planes activos que devuelve la lista de planes de la API
+const pricing = apiPlans.length > 0
+	? apiPlans.map((plan: any) => {
+		const style = planStyles[plan.name] || {
+			type: plan.name,
+			description: plan.description || 'Pase para el congreso',
+			subDescription: '* Precio por persona',
+			bgClass: 'bg-gradient-to-br from-[#4a148c] to-[#2c1065]',
+			textClass: 'text-white',
+			priceClass: 'text-white',
+			btnClass: 'bg-[#fbc02d] text-[#4a148c] hover:bg-yellow-500'
+		}
+		return {
+			...style,
+			apiName: plan.name,
+			price: parseInt(plan.price).toString(),
+			btnText: '¡Inscríbete ya!'
+		}
+	})
+	: [
+		{
+			type: 'Individual',
+			apiName: 'Individual',
+			description: 'Pase general para 1 persona',
+			subDescription: '* Precio por persona',
+			price: '150',
+			btnText: '¡Inscríbete ya!',
+			bgClass: 'bg-gradient-to-br from-[#4a148c] to-[#2c1065]',
+			textClass: 'text-white',
+			priceClass: 'text-white',
+			btnClass: 'bg-[#fbc02d] text-[#4a148c] hover:bg-yellow-500'
+		},
+		{
+			type: 'Grupo de 10+',
+			apiName: 'Grupo de 10',
+			description: 'Mejor tarifa para delegaciones',
+			subDescription: '* Precio por persona',
+			price: '140',
+			btnText: '¡Inscríbete ya!',
+			bgClass: 'bg-gradient-to-br from-[#d32f2f] to-[#b71c1c]',
+			textClass: 'text-white',
+			priceClass: 'text-white',
+			btnClass: 'bg-[#fbc02d] text-[#4a148c] hover:bg-yellow-500'
+		}
+	]
 ---
 
 <section class="program-pricing-section overflow-x-hidden bg-white py-20 dark:bg-transparent">
 	<div class="max-w-8xl container mx-auto px-4">
-		<div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
-			<!-- Left Column: Programa (Master → Detail) -->
+		<div class="mx-auto max-w-3xl">
+			<!-- Left Column: Programa del Congreso (Comentado temporalmente ya que aún no hay programa tentativo) -->
+			<!--
 			<div id="programa" class="min-w-0 overflow-hidden">
 				<div class="mb-10 flex items-center justify-center">
 					<div
@@ -147,9 +180,7 @@ const pricing = [
 					</div>
 				</div>
 
-				<!-- Slide wrapper -->
 				<div id="program-slider" class="relative w-full overflow-hidden">
-					<!-- MASTER VIEW: Lista de días -->
 					<div id="program-master" class="duration-400 transition-transform ease-in-out">
 						<div class="space-y-3">
 							{
@@ -206,7 +237,6 @@ const pricing = [
 							}
 						</div>
 
-						<!-- CTA -->
 						<div class="mt-8 flex justify-center">
 							<a
 								href="/programa"
@@ -242,13 +272,11 @@ const pricing = [
 						</div>
 					</div>
 
-					<!-- DETAIL VIEW: Detalle del día seleccionado -->
 					<div
 						id="program-detail"
 						class="duration-400 absolute inset-0 translate-x-full transition-transform ease-in-out will-change-transform"
 						style="visibility: hidden;"
 					>
-						<!-- Detail header -->
 						<div
 							id="detail-header"
 							class="mb-4 flex items-center justify-between rounded-xl p-4 text-white shadow-lg"
@@ -282,7 +310,6 @@ const pricing = [
 							</div>
 						</div>
 
-						<!-- Events list -->
 						<div
 							id="detail-events"
 							style="max-height:380px;overflow-y:auto;overflow-x:hidden;"
@@ -291,6 +318,7 @@ const pricing = [
 					</div>
 				</div>
 			</div>
+			-->
 
 			<!-- Right Column: Asegura tu lugar -->
 			<div id="precios" class="min-w-0">

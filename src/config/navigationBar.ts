@@ -37,15 +37,15 @@ export interface NavData {
 export const navigationBarData: NavData = {
 	logo: {
 		src: '/logo.svg',
-		alt: 'CAEPPERU Cusco 2026',
-		text: 'CAEPPERU Cusco 2026',
-		text_s: 'Cusco'
+		alt: 'CAEPPERU Piura 2027',
+		text: 'CAEPPERU Piura 2027',
+		text_s: 'Piura'
 	},
 	navItems: [
 		{ name: 'Inicio', link: '/' },
-		{ name: 'Programa', link: '/#programa' },
+		// { name: 'Programa', link: '/#programa' },
 		{ name: 'Precios', link: '/#precios' },
-		{ name: 'Ponentes', link: '/#ponentes' },
+		// { name: 'Ponentes', link: '/#ponentes' },
 		// {
 		// 	name: 'Recursos',
 		// 	link: '#',
